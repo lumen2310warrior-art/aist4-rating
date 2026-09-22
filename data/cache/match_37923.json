@@ -1,0 +1,176 @@
+{
+ "match_id": 37923,
+ "home": "Аист-4",
+ "away": "DOZOR",
+ "home_goals": 4,
+ "away_goals": 11,
+ "date": "05.06 22:10",
+ "home_id": 827,
+ "away_id": 660,
+ "lineups": {
+  "home": [
+   {
+    "player_id": 16980,
+    "name": "Демидов Данила",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 11700,
+    "name": "Казаков Кирилл",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16865,
+    "name": "Корчеманов Матвей",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16864,
+    "name": "Селезнев Егор",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16415,
+    "name": "Хаит Александр",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8756,
+    "name": "Азаров Виталий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6515,
+    "name": "Кауров Иван",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12697,
+    "name": "Овсянников Роман",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 9034,
+    "name": "Давыдкин Сергей",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 11973,
+    "name": "Карий Виктор",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 10346,
+    "name": "Костин Дмитрий",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 9038,
+    "name": "Толстов Иван",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 10507,
+    "name": "Фокин Евгений",
+    "position": "Защитник",
+    "goals": 3,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12571,
+    "name": "Терёхин Егор",
+    "position": "Нападающий",
+    "goals": 4,
+    "assists": 4,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 15093,
+    "name": "Мищенко Артём",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 15754,
+    "name": "Алимбаев Руслан",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}

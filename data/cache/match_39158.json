@@ -1,0 +1,186 @@
+{
+ "match_id": 39158,
+ "home": "Солнышко",
+ "away": "Аист-4",
+ "home_goals": 10,
+ "away_goals": 6,
+ "date": "21.09 21:00",
+ "home_id": 1031,
+ "away_id": 827,
+ "lineups": {
+  "home": [
+   {
+    "player_id": 16920,
+    "name": "Садыков Динар",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17077,
+    "name": "Митюлькин Василий",
+    "position": "Нападающий",
+    "goals": 6,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16917,
+    "name": "Иванов Данил",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16928,
+    "name": "Безруков Дмитрий",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16927,
+    "name": "Садыков Ильназ",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16921,
+    "name": "Мирсков Артем",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16913,
+    "name": "Щилко Артём",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16932,
+    "name": "Кравцов Даниил",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 5157,
+    "name": "Прохоров Дмитрий",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16864,
+    "name": "Селезнев Егор",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 2123,
+    "name": "Макаров Владислав",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 11700,
+    "name": "Казаков Кирилл",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12697,
+    "name": "Овсянников Роман",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16980,
+    "name": "Демидов Данила",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6092,
+    "name": "Сергиенко Алексей",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16415,
+    "name": "Хаит Александр",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17333,
+    "name": "Сапегин Родион",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}

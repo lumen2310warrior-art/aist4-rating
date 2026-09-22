@@ -1,0 +1,186 @@
+{
+ "match_id": 39132,
+ "home": "Аист-4",
+ "away": "Квадратика",
+ "home_goals": 7,
+ "away_goals": 13,
+ "date": "11.09 19:50",
+ "home_id": 827,
+ "away_id": 782,
+ "lineups": {
+  "home": [
+   {
+    "player_id": 12696,
+    "name": "Воинцев Алексей",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16435,
+    "name": "Челноков Иван",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16864,
+    "name": "Селезнев Егор",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 4,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8756,
+    "name": "Азаров Виталий",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16489,
+    "name": "Еремеев Александр",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16980,
+    "name": "Демидов Данила",
+    "position": "Нападающий",
+    "goals": 3,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17333,
+    "name": "Сапегин Родион",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17332,
+    "name": "Зайцев Глеб",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 12496,
+    "name": "Юртаев Дмитрий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 3676,
+    "name": "Котов Фиргать",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 11685,
+    "name": "Щетинин Артём",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12331,
+    "name": "Автухов Виктор",
+    "position": "Защитник",
+    "goals": 4,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 3167,
+    "name": "Васильев Евгений",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 13283,
+    "name": "Сорокин Владимир",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 10019,
+    "name": "Зарипов Ильнур",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12097,
+    "name": "Балмашов Сергей",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 10679,
+    "name": "Гусев Александр",
+    "position": "Нападающий",
+    "goals": 3,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}

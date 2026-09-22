@@ -1,3 +1,174 @@
-<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Рейтинг игроков Аист-4</title><body style="font:18px system-ui;padding:40px;color:#13212C;background:#E8ECEF">
-Рейтинг появится после первого запуска обновления (Actions → «Обновление рейтинга» → «Run workflow»).</body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Рейтинг игроков Аист-4</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&family=Unbounded:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#E8ECEF; --paper:#FFFFFF; --ink:#13212C; --muted:#5E6E7B;
+  --court:#1B5B84; --court-deep:#144766; --line:#F2A33A; --rule:#D3DAE0;
+  --yellow:#E8C23A; --red:#C8423B;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --text:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--wall);color:var(--ink);font:16px/1.5 var(--text);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+
+/* Площадка: единственный яркий элемент страницы */
+.court{position:relative;background:var(--court);color:#fff;overflow:hidden;
+  padding:calc(40px + env(safe-area-inset-top,0px)) 0 44px}
+.court::before,.court::after{content:"";position:absolute;pointer-events:none}
+.court::before{left:50%;top:-1px;bottom:-1px;border-left:2px solid rgba(255,255,255,.35)}
+.court::after{left:50%;top:50%;width:220px;height:220px;margin:-110px 0 0 -110px;
+  border:2px solid rgba(255,255,255,.35);border-radius:50%}
+.court .arc{position:absolute;top:50%;width:170px;height:260px;margin-top:-130px;
+  border:2px solid rgba(255,255,255,.35);border-radius:50%}
+.court .arc.l{left:-95px}.court .arc.r{right:-95px}
+.court .wrap{position:relative;z-index:1}
+.court h1{font:800 clamp(40px,9vw,88px)/1 var(--display);margin:0;letter-spacing:-.01em}
+.court p{margin:14px 0 0;font-size:18px;color:rgba(255,255,255,.85);max-width:32em}
+.court .upd{font-size:14px;color:rgba(255,255,255,.7);margin-top:6px}
+
+.controls{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;
+  margin:28px 0 16px}
+.seg{display:inline-flex;background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:3px}
+.seg button{font:500 15px var(--text);color:var(--muted);background:none;border:0;border-radius:7px;
+  padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg button:focus-visible,.sort:focus-visible{outline:3px solid var(--line);outline-offset:2px}
+.sortbox{font-size:15px;color:var(--muted)}
+.sort{font:500 15px var(--text);background:none;border:0;border-bottom:2px solid transparent;
+  color:var(--muted);padding:4px 2px;margin-left:10px;cursor:pointer}
+.sort[aria-pressed="true"]{color:var(--ink);border-color:var(--line)}
+
+.board{background:var(--paper);border:1px solid var(--rule);border-radius:12px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:760px;font-variant-numeric:tabular-nums}
+th,td{padding:11px 10px;text-align:right;white-space:nowrap}
+th{font-size:13px;font-weight:500;color:var(--muted);border-bottom:1px solid var(--rule)}
+th.l,td.l{text-align:left}
+tbody tr+tr td{border-top:1px solid #EEF1F3}
+td.place{width:44px;color:var(--muted);text-align:center}
+td.name{position:sticky;left:0;background:var(--paper)}
+.nm{font-weight:500}
+.pos{display:block;font-size:13px;color:var(--muted)}
+td.total{font:800 18px var(--display)}
+th:nth-child(4),td.pm{padding-right:22px;border-right:1px solid #EEF1F3}
+td.pm{font-weight:700}
+tr.leader td.place{box-shadow:inset 4px 0 0 var(--line);color:var(--ink);font-weight:700}
+.card{display:inline-block;width:9px;height:13px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+.card.y{background:var(--yellow)}.card.r{background:var(--red)}
+.zero{color:#B4BEC6}
+.empty{padding:40px 20px;text-align:center;color:var(--muted)}
+
+h2{font:500 22px/1.2 var(--display);margin:48px 0 14px}
+.matches{list-style:none;margin:0;padding:0;background:var(--paper);border:1px solid var(--rule);border-radius:12px}
+.matches li{display:grid;grid-template-columns:150px 1fr;gap:4px 16px;padding:12px 16px;align-items:baseline}
+.matches li+li{border-top:1px solid #EEF1F3}
+.matches .d{color:var(--muted);font-size:14px}
+.matches .sc{font-weight:700;font-variant-numeric:tabular-nums}
+.matches .mvp{grid-column:2/3;font-size:14px;color:var(--muted)}
+.matches a{color:inherit}
+.how{margin:48px 0 56px;max-width:68ch;color:var(--muted);font-size:15px}
+.how p{margin:.4em 0}
+@media (max-width:560px){
+  .matches li{grid-template-columns:1fr}.matches .d,.matches .mvp{grid-column:1/2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="court">
+  <span class="arc l"></span><span class="arc r"></span>
+  <div class="wrap">
+    <h1>Аист-4</h1>
+    <p>Рейтинг игроков по протоколам РФЛ и опросу команды</p>
+    <div class="upd">Обновлено 22.09.2026 22:04</div>
+  </div>
+</header>
+<main class="wrap">
+  <div class="controls">
+    <div class="seg" id="groups" role="group" aria-label="Турнир"></div>
+    <div class="sortbox">Сортировать:
+      <button class="sort" data-sort="total" aria-pressed="true">по общему баллу</button>
+      <button class="sort" data-sort="per_match" aria-pressed="false">по баллам за матч</button>
+    </div>
+  </div>
+  <div class="board" id="board"></div>
+  <h2>Матчи</h2>
+  <ul class="matches" id="matches"></ul>
+  <section class="how" id="how"></section>
+</main>
+<script type="application/json" id="data">{"team": "Аист-4", "title": "Рейтинг игроков Аист-4", "updated": "22.09.2026 22:04", "weights": {"game": 1.0, "goal": 1.2, "assist": 1.0, "mvp": 1.5, "yellow": -0.5, "red": -1.0}, "gk_factor": 0.3, "groups": {"championship": {"title": "Чемпионат", "players": [{"player_id": 16864, "name": "Селезнев Егор", "position": "Нападающий", "games": 16, "goals": 29, "assists": 11, "mvp": 5, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 69.3, "per_match": 4.33}, {"player_id": 16980, "name": "Демидов Данила", "position": "Нападающий", "games": 13, "goals": 23, "assists": 15, "mvp": 5, "yellow": 3, "red": 1, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 60.6, "per_match": 4.66}, {"player_id": 8756, "name": "Азаров Виталий", "position": "Защитник", "games": 15, "goals": 5, "assists": 1, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 23.5, "per_match": 1.57}, {"player_id": 12697, "name": "Овсянников Роман", "position": "Нападающий", "games": 14, "goals": 2, "assists": 6, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 22.4, "per_match": 1.6}, {"player_id": 12696, "name": "Воинцев Алексей", "position": "Вратарь", "games": 10, "goals": 0, "assists": 5, "mvp": 4, "yellow": 1, "red": 0, "op": 0, "gk_games": 10, "gk_bonus": 1.13, "total": 21.63, "per_match": 2.16}, {"player_id": 5157, "name": "Прохоров Дмитрий", "position": "Нападающий", "games": 4, "goals": 8, "assists": 6, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 21.1, "per_match": 5.28}, {"player_id": 16489, "name": "Еремеев Александр", "position": "Нападающий", "games": 10, "goals": 3, "assists": 6, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 19.6, "per_match": 1.96}, {"player_id": 6515, "name": "Кауров Иван", "position": "Защитник", "games": 11, "goals": 3, "assists": 3, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 17.6, "per_match": 1.6}, {"player_id": 16435, "name": "Челноков Иван", "position": "Защитник", "games": 10, "goals": 4, "assists": 3, "mvp": 0, "yellow": 1, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 17.3, "per_match": 1.73}, {"player_id": 17332, "name": "Зайцев Глеб", "position": "Нападающий", "games": 3, "goals": 5, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 10.0, "per_match": 3.33}, {"player_id": 17333, "name": "Сапегин Родион", "position": "Защитник", "games": 4, "goals": 2, "assists": 3, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 9.4, "per_match": 2.35}, {"player_id": 16415, "name": "Хаит Александр", "position": "Защитник", "games": 9, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 9.0, "per_match": 1.0}, {"player_id": 6092, "name": "Сергиенко Алексей", "position": "Нападающий", "games": 4, "goals": 2, "assists": 2, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 8.4, "per_match": 2.1}, {"player_id": 2123, "name": "Макаров Владислав", "position": "Нападающий", "games": 5, "goals": 1, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 7.2, "per_match": 1.44}, {"player_id": 15014, "name": "Гизатуллин Камиль", "position": "Нападающий", "games": 3, "goals": 3, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 6.6, "per_match": 2.2}, {"player_id": 11700, "name": "Казаков Кирилл", "position": "Вратарь", "games": 4, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 4, "gk_bonus": 0.0, "total": 4.0, "per_match": 1.0}, {"player_id": 2120, "name": "Николаев Михаил", "position": "Вратарь", "games": 2, "goals": 0, "assists": 0, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 2, "gk_bonus": 0.0, "total": 3.5, "per_match": 1.75}, {"player_id": 16426, "name": "Акимов Артем", "position": "", "games": 2, "goals": 1, "assists": 2, "mvp": 0, "yellow": 1, "red": 2, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.7, "per_match": 1.35}, {"player_id": 9863, "name": "Корнилов Сергей", "position": "Защитник", "games": 2, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.0, "per_match": 1.0}, {"player_id": 16865, "name": "Корчеманов Матвей", "position": "Нападающий", "games": 2, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.0, "per_match": 1.0}, {"player_id": 16982, "name": "Фролов Игнат", "position": "Нападающий", "games": 2, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.0, "per_match": 1.0}], "matches": [{"match_id": 37901, "date": "19 апреля 15:10", "opponent": "Сапсан", "home": true, "scored": 2, "conceded": 14, "expected": 7.89, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37912, "date": "03 мая 13:10", "opponent": "ТСК", "home": true, "scored": 1, "conceded": 15, "expected": 9.67, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 37916, "date": "10 мая 19:00", "opponent": "Bad Boys", "home": false, "scored": 2, "conceded": 18, "expected": 9.37, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 37923, "date": "05 июня 22:10", "opponent": "DOZOR", "home": true, "scored": 4, "conceded": 11, "expected": 5.29, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37930, "date": "23 мая 15:50", "opponent": "Nova", "home": false, "scored": 4, "conceded": 9, "expected": 5.9, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 37934, "date": "31 мая 22:00", "opponent": "Эклектика", "home": true, "scored": 3, "conceded": 6, "expected": 4.11, "expected_basis": "соперник", "mvp_names": ["Азаров Виталий"], "group": "championship"}, {"match_id": 37943, "date": "14 июня 20:30", "opponent": "БАКС", "home": true, "scored": 8, "conceded": 9, "expected": 7.0, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37947, "date": "20 июня 19:00", "opponent": "Бурение", "home": false, "scored": 6, "conceded": 5, "expected": 4.38, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37955, "date": "04 июля 15:00", "opponent": "Ладья", "home": true, "scored": 6, "conceded": 4, "expected": 6.71, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37960, "date": "13 июля 22:00", "opponent": "Ротор", "home": false, "scored": 3, "conceded": 9, "expected": 10.05, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 39116, "date": "24 июля 22:10", "opponent": "Штурм", "home": true, "scored": 8, "conceded": 7, "expected": 5.65, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 39121, "date": "02 августа 15:00", "opponent": "Derby", "home": false, "scored": 12, "conceded": 3, "expected": 3.83, "expected_basis": "соперник", "mvp_names": ["Прохоров Дмитрий"], "group": "championship"}, {"match_id": 39132, "date": "11 сентября 19:50", "opponent": "Квадратика", "home": true, "scored": 7, "conceded": 13, "expected": 9.93, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 39136, "date": "23 августа 13:30", "opponent": "Ладья", "home": false, "scored": 5, "conceded": 7, "expected": 6.71, "expected_basis": "соперник", "mvp_names": ["Николаев Михаил"], "group": "championship"}, {"match_id": 39142, "date": "29 августа 17:50", "opponent": "Не Интер", "home": true, "scored": 2, "conceded": 6, "expected": 5.94, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 39147, "date": "05 сентября 19:40", "opponent": "Патриоты", "home": false, "scored": 5, "conceded": 11, "expected": 8.53, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 39152, "date": "13 сентября 15:00", "opponent": "Скам", "home": true, "scored": 7, "conceded": 8, "expected": 4.89, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 39158, "date": "21 сентября 21:00", "opponent": "Солнышко", "home": false, "scored": 6, "conceded": 10, "expected": 3.89, "expected_basis": "соперник", "mvp_names": [], "group": "championship"}]}, "cup": {"title": "Кубок", "players": [{"player_id": 16980, "name": "Демидов Данила", "position": "Нападающий", "games": 3, "goals": 7, "assists": 2, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 14.9, "per_match": 4.97}, {"player_id": 12697, "name": "Овсянников Роман", "position": "Нападающий", "games": 3, "goals": 1, "assists": 2, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 7.7, "per_match": 2.57}, {"player_id": 6515, "name": "Кауров Иван", "position": "Защитник", "games": 3, "goals": 3, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 7.6, "per_match": 2.53}, {"player_id": 8756, "name": "Азаров Виталий", "position": "Защитник", "games": 2, "goals": 2, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 5.4, "per_match": 2.7}, {"player_id": 12696, "name": "Воинцев Алексей", "position": "Вратарь", "games": 2, "goals": 0, "assists": 0, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 2, "gk_bonus": 0.88, "total": 4.38, "per_match": 2.19}, {"player_id": 16910, "name": "Попов Виталий", "position": "Защитник", "games": 1, "goals": 1, "assists": 2, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 4.2, "per_match": 4.2}, {"player_id": 16982, "name": "Фролов Игнат", "position": "Нападающий", "games": 2, "goals": 1, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 3.2, "per_match": 1.6}, {"player_id": 16415, "name": "Хаит Александр", "position": "Защитник", "games": 2, "goals": 0, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 3.0, "per_match": 1.5}, {"player_id": 16864, "name": "Селезнев Егор", "position": "Нападающий", "games": 1, "goals": 2, "assists": 0, "mvp": 0, "yellow": 1, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.9, "per_match": 2.9}, {"player_id": 11700, "name": "Казаков Кирилл", "position": "Вратарь", "games": 1, "goals": 0, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 1, "gk_bonus": 0.0, "total": 2.0, "per_match": 2.0}, {"player_id": 6092, "name": "Сергиенко Алексей", "position": "Нападающий", "games": 1, "goals": 0, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.0, "per_match": 2.0}, {"player_id": 16414, "name": "Гаутам Анш", "position": "Нападающий", "games": 1, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 1.0, "per_match": 1.0}, {"player_id": 16489, "name": "Еремеев Александр", "position": "Нападающий", "games": 1, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 1.0, "per_match": 1.0}, {"player_id": 16435, "name": "Челноков Иван", "position": "Защитник", "games": 1, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 1.0, "per_match": 1.0}], "matches": [{"match_id": 38217, "date": "29.05 22:10", "opponent": "Не Интер", "home": true, "scored": 8, "conceded": 3, "expected": 5.94, "expected_basis": "соперник", "mvp_names": ["Овсянников Роман"], "group": "cup"}, {"match_id": 38457, "date": "07.06 20:50", "opponent": "Лисы", "home": true, "scored": 2, "conceded": 10, "expected": 5.4, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "cup"}, {"match_id": 38521, "date": "28.06 17:50", "opponent": "Щит", "home": false, "scored": 7, "conceded": 10, "expected": 6.55, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "cup"}]}, "all": {"title": "Все турниры", "players": [{"player_id": 16980, "name": "Демидов Данила", "position": "Нападающий", "games": 16, "goals": 30, "assists": 17, "mvp": 6, "yellow": 3, "red": 1, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 75.5, "per_match": 4.72}, {"player_id": 16864, "name": "Селезнев Егор", "position": "Нападающий", "games": 17, "goals": 31, "assists": 11, "mvp": 5, "yellow": 1, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 72.2, "per_match": 4.25}, {"player_id": 12697, "name": "Овсянников Роман", "position": "Нападающий", "games": 17, "goals": 3, "assists": 8, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 30.1, "per_match": 1.77}, {"player_id": 8756, "name": "Азаров Виталий", "position": "Защитник", "games": 17, "goals": 7, "assists": 2, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 28.9, "per_match": 1.7}, {"player_id": 12696, "name": "Воинцев Алексей", "position": "Вратарь", "games": 12, "goals": 0, "assists": 5, "mvp": 5, "yellow": 1, "red": 0, "op": 0, "gk_games": 12, "gk_bonus": 2.01, "total": 26.01, "per_match": 2.17}, {"player_id": 6515, "name": "Кауров Иван", "position": "Защитник", "games": 14, "goals": 6, "assists": 4, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 25.2, "per_match": 1.8}, {"player_id": 5157, "name": "Прохоров Дмитрий", "position": "Нападающий", "games": 4, "goals": 8, "assists": 6, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 21.1, "per_match": 5.28}, {"player_id": 16489, "name": "Еремеев Александр", "position": "Нападающий", "games": 11, "goals": 3, "assists": 6, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 20.6, "per_match": 1.87}, {"player_id": 16435, "name": "Челноков Иван", "position": "Защитник", "games": 11, "goals": 4, "assists": 3, "mvp": 0, "yellow": 1, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 18.3, "per_match": 1.66}, {"player_id": 16415, "name": "Хаит Александр", "position": "Защитник", "games": 11, "goals": 0, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 12.0, "per_match": 1.09}, {"player_id": 6092, "name": "Сергиенко Алексей", "position": "Нападающий", "games": 5, "goals": 2, "assists": 3, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 10.4, "per_match": 2.08}, {"player_id": 17332, "name": "Зайцев Глеб", "position": "Нападающий", "games": 3, "goals": 5, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 10.0, "per_match": 3.33}, {"player_id": 17333, "name": "Сапегин Родион", "position": "Защитник", "games": 4, "goals": 2, "assists": 3, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 9.4, "per_match": 2.35}, {"player_id": 2123, "name": "Макаров Владислав", "position": "Нападающий", "games": 5, "goals": 1, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 7.2, "per_match": 1.44}, {"player_id": 15014, "name": "Гизатуллин Камиль", "position": "Нападающий", "games": 3, "goals": 3, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 6.6, "per_match": 2.2}, {"player_id": 11700, "name": "Казаков Кирилл", "position": "Вратарь", "games": 5, "goals": 0, "assists": 1, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 5, "gk_bonus": 0.0, "total": 6.0, "per_match": 1.2}, {"player_id": 16982, "name": "Фролов Игнат", "position": "Нападающий", "games": 4, "goals": 1, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 5.2, "per_match": 1.3}, {"player_id": 16910, "name": "Попов Виталий", "position": "Защитник", "games": 1, "goals": 1, "assists": 2, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 4.2, "per_match": 4.2}, {"player_id": 2120, "name": "Николаев Михаил", "position": "Вратарь", "games": 2, "goals": 0, "assists": 0, "mvp": 1, "yellow": 0, "red": 0, "op": 0, "gk_games": 2, "gk_bonus": 0.0, "total": 3.5, "per_match": 1.75}, {"player_id": 16426, "name": "Акимов Артем", "position": "", "games": 2, "goals": 1, "assists": 2, "mvp": 0, "yellow": 1, "red": 2, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.7, "per_match": 1.35}, {"player_id": 9863, "name": "Корнилов Сергей", "position": "Защитник", "games": 2, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.0, "per_match": 1.0}, {"player_id": 16865, "name": "Корчеманов Матвей", "position": "Нападающий", "games": 2, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 2.0, "per_match": 1.0}, {"player_id": 16414, "name": "Гаутам Анш", "position": "Нападающий", "games": 1, "goals": 0, "assists": 0, "mvp": 0, "yellow": 0, "red": 0, "op": 0, "gk_games": 0, "gk_bonus": 0.0, "total": 1.0, "per_match": 1.0}], "matches": [{"match_id": 37901, "date": "19 апреля 15:10", "opponent": "Сапсан", "home": true, "scored": 2, "conceded": 14, "expected": 7.89, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37912, "date": "03 мая 13:10", "opponent": "ТСК", "home": true, "scored": 1, "conceded": 15, "expected": 9.67, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 37916, "date": "10 мая 19:00", "opponent": "Bad Boys", "home": false, "scored": 2, "conceded": 18, "expected": 9.37, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 37923, "date": "05 июня 22:10", "opponent": "DOZOR", "home": true, "scored": 4, "conceded": 11, "expected": 5.29, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37930, "date": "23 мая 15:50", "opponent": "Nova", "home": false, "scored": 4, "conceded": 9, "expected": 5.9, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 37934, "date": "31 мая 22:00", "opponent": "Эклектика", "home": true, "scored": 3, "conceded": 6, "expected": 4.11, "expected_basis": "соперник", "mvp_names": ["Азаров Виталий"], "group": "championship"}, {"match_id": 37943, "date": "14 июня 20:30", "opponent": "БАКС", "home": true, "scored": 8, "conceded": 9, "expected": 7.0, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37947, "date": "20 июня 19:00", "opponent": "Бурение", "home": false, "scored": 6, "conceded": 5, "expected": 4.38, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37955, "date": "04 июля 15:00", "opponent": "Ладья", "home": true, "scored": 6, "conceded": 4, "expected": 6.71, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "championship"}, {"match_id": 37960, "date": "13 июля 22:00", "opponent": "Ротор", "home": false, "scored": 3, "conceded": 9, "expected": 10.05, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 39116, "date": "24 июля 22:10", "opponent": "Штурм", "home": true, "scored": 8, "conceded": 7, "expected": 5.65, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 39121, "date": "02 августа 15:00", "opponent": "Derby", "home": false, "scored": 12, "conceded": 3, "expected": 3.83, "expected_basis": "соперник", "mvp_names": ["Прохоров Дмитрий"], "group": "championship"}, {"match_id": 39132, "date": "11 сентября 19:50", "opponent": "Квадратика", "home": true, "scored": 7, "conceded": 13, "expected": 9.93, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 39136, "date": "23 августа 13:30", "opponent": "Ладья", "home": false, "scored": 5, "conceded": 7, "expected": 6.71, "expected_basis": "соперник", "mvp_names": ["Николаев Михаил"], "group": "championship"}, {"match_id": 39142, "date": "29 августа 17:50", "opponent": "Не Интер", "home": true, "scored": 2, "conceded": 6, "expected": 5.94, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "championship"}, {"match_id": 39147, "date": "05 сентября 19:40", "opponent": "Патриоты", "home": false, "scored": 5, "conceded": 11, "expected": 8.53, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 39152, "date": "13 сентября 15:00", "opponent": "Скам", "home": true, "scored": 7, "conceded": 8, "expected": 4.89, "expected_basis": "соперник", "mvp_names": ["Селезнев Егор"], "group": "championship"}, {"match_id": 39158, "date": "21 сентября 21:00", "opponent": "Солнышко", "home": false, "scored": 6, "conceded": 10, "expected": 3.89, "expected_basis": "соперник", "mvp_names": [], "group": "championship"}, {"match_id": 38217, "date": "29.05 22:10", "opponent": "Не Интер", "home": true, "scored": 8, "conceded": 3, "expected": 5.94, "expected_basis": "соперник", "mvp_names": ["Овсянников Роман"], "group": "cup"}, {"match_id": 38457, "date": "07.06 20:50", "opponent": "Лисы", "home": true, "scored": 2, "conceded": 10, "expected": 5.4, "expected_basis": "соперник", "mvp_names": ["Воинцев Алексей"], "group": "cup"}, {"match_id": 38521, "date": "28.06 17:50", "opponent": "Щит", "home": false, "scored": 7, "conceded": 10, "expected": 6.55, "expected_basis": "соперник", "mvp_names": ["Демидов Данила"], "group": "cup"}]}}, "warnings": []}</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const order = ['championship','cup','all'];
+let group = order.find(k => D.groups[k] && D.groups[k].matches.length) || 'all';
+let sortKey = 'total';
+const fmt = n => (Math.round(n*100)/100).toLocaleString('ru-RU');
+const z = n => n ? n : '<span class="zero">0</span>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function renderGroups(){
+  const box = document.getElementById('groups');
+  box.innerHTML = order.filter(k => D.groups[k]).map(k =>
+    `<button data-g="${k}" aria-pressed="${k===group}">${esc(D.groups[k].title)}</button>`).join('');
+  box.querySelectorAll('button').forEach(b => b.onclick = () => { group = b.dataset.g; draw(); });
+}
+function renderBoard(){
+  const g = D.groups[group];
+  const rows = [...g.players].sort((a,b) => b[sortKey]-a[sortKey] || b.total-a.total);
+  const el = document.getElementById('board');
+  if (!rows.length){ el.innerHTML = '<div class="empty">В этом турнире пока нет сыгранных матчей. Рейтинг появится после первого протокола на сайте лиги.</div>'; return; }
+  el.innerHTML = `<table><thead><tr>
+    <th>Место</th><th class="l">Игрок</th><th>Балл</th><th>За матч</th><th title="Игры">И</th><th title="Голы">Г</th>
+    <th title="Голевые передачи">П</th><th title="Лучший игрок матча">ЛИ</th>
+    <th title="Желтые карточки">ЖК</th><th title="Красные карточки">КК</th>
+    <th title="Бонус вратаря">Бонус вр.</th></tr></thead><tbody>` +
+    rows.map((r,i) => `<tr class="${i===0?'leader':''}">
+      <td class="place">${i+1}</td>
+      <td class="l name"><span class="nm">${esc(r.name)}</span><span class="pos">${esc(r.position||'')}</span></td>
+      <td class="total">${fmt(r.total)}</td><td class="pm">${fmt(r.per_match)}</td>
+      <td>${r.games}</td><td>${z(r.goals)}</td><td>${z(r.assists)}</td><td>${z(r.mvp)}</td>
+      <td>${r.yellow?'<span class="card y"></span>'+r.yellow:z(0)}</td>
+      <td>${r.red?'<span class="card r"></span>'+r.red:z(0)}</td>
+      <td>${r.gk_games?fmt(r.gk_bonus):'<span class="zero">·</span>'}</td></tr>`).join('') +
+    '</tbody></table>';
+}
+function renderMatches(){
+  const ms = D.groups[group].matches;
+  const el = document.getElementById('matches');
+  if (!ms.length){ el.innerHTML = '<li><span class="d"></span><span>Сыгранных матчей пока нет</span></li>'; return; }
+  el.innerHTML = [...ms].reverse().map(m => {
+    const line = m.home ? `${esc(D.team)} <span class="sc">${m.scored}:${m.conceded}</span> ${esc(m.opponent)}`
+                        : `${esc(m.opponent)} <span class="sc">${m.conceded}:${m.scored}</span> ${esc(D.team)}`;
+    const mvp = m.mvp_names.length ? 'Лучший игрок: ' + m.mvp_names.map(esc).join(', ') : 'Лучший игрок не указан';
+    return `<li><span class="d">${esc(m.date||'')}</span>
+      <a href="https://rfll.ru/match/${m.match_id}">${line}</a>
+      <span class="mvp">${mvp}. Ожидалось пропущенных: ${fmt(m.expected)} (${m.expected_basis==='соперник'?'по сопернику':'по лиге'})</span></li>`;
+  }).join('');
+}
+function renderHow(){
+  const w = D.weights;
+  document.getElementById('how').innerHTML = `<h2>Как считаются баллы</h2>
+  <p>Игра ${fmt(w.game)}, гол ${fmt(w.goal)}, голевая передача ${fmt(w.assist)}, лучший игрок матча ${fmt(w.mvp)}, желтая карточка ${fmt(w.yellow)}, красная ${fmt(w.red)}.</p>
+  <p>Вратарь дополнительно получает (ожидаемые голы соперника минус пропущенные) × ${fmt(D.gk_factor)}, но не меньше нуля. Ожидаемые голы равны средней результативности соперника в турнире; если соперник сыграл меньше трех матчей, берется среднее по лиге.</p>
+  <p>Баллы за матч равны общему баллу, деленному на число игр, и не опускаются ниже нуля.</p>`;
+}
+function draw(){ renderGroups(); renderBoard(); renderMatches(); }
+document.querySelectorAll('.sort').forEach(b => b.onclick = () => {
+  sortKey = b.dataset.sort;
+  document.querySelectorAll('.sort').forEach(x => x.setAttribute('aria-pressed', x===b));
+  renderBoard();
+});
+renderHow(); draw();
+</script>
+</body>
+</html>

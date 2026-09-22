@@ -1,0 +1,136 @@
+{
+ "match_id": 37916,
+ "home": "Bad Boys",
+ "away": "Аист-4",
+ "home_goals": 18,
+ "away_goals": 2,
+ "date": "10.05 19:00",
+ "home_id": 468,
+ "away_id": 827,
+ "lineups": {
+  "home": [
+   {
+    "player_id": 3420,
+    "name": "Епифанов Никита",
+    "position": "Защитник",
+    "goals": 8,
+    "assists": 4,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 737,
+    "name": "Ситников Александр",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 5420,
+    "name": "Ярмолович Александр",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 784,
+    "name": "Саидов Игорь",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 5924,
+    "name": "Дубовицкий Михаил",
+    "position": "Нападающий",
+    "goals": 3,
+    "assists": 4,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 89,
+    "name": "Арзуманов Роман",
+    "position": "Защитник",
+    "goals": 4,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 12696,
+    "name": "Воинцев Алексей",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16435,
+    "name": "Челноков Иван",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12697,
+    "name": "Овсянников Роман",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 9863,
+    "name": "Корнилов Сергей",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6515,
+    "name": "Кауров Иван",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16489,
+    "name": "Еремеев Александр",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}
