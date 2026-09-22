@@ -1,0 +1,27 @@
+name: Обновление рейтинга
+
+on:
+  schedule:
+    - cron: "0 5 * * *"      # каждый день в 08:00 по Москве
+  workflow_dispatch:           # кнопка ручного запуска во вкладке Actions
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python main.py
+      - name: Сохранить обновленную страницу
+        run: |
+          git config user.name "rating-bot"
+          git config user.email "rating-bot@users.noreply.github.com"
+          git add docs data
+          git diff --cached --quiet || git commit -m "Обновление рейтинга"
+          git push
