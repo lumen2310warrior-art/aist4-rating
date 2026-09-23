@@ -61,14 +61,43 @@ def check(cfg):
     return 0 if ok else 1
 
 
+def check_polls(cfg):
+    """Может ли ключ сообщества создавать опросы и читать голоса. Опрос никуда не публикуется."""
+    import time
+    group = VK(os.environ.get("VK_GROUP_TOKEN"), "сообщество")
+    gid = -abs(int(cfg["vk"]["group_id"]))
+    steps = []
+    try:
+        poll = group.call("polls.create", question="Проверка бота (не публикуется)",
+                          add_answers=["Да", "Нет"], owner_id=gid, is_anonymous=0,
+                          end_date=int(time.time()) + 3600)
+        steps.append(f"1. Создание опроса от имени сообщества: РАБОТАЕТ (poll{poll['owner_id']}_{poll['id']})")
+    except VKError as e:
+        print(f"1. Создание опроса от имени сообщества: НЕ РАБОТАЕТ ({e})")
+        return 1
+    try:
+        info = group.call("polls.getById", owner_id=poll["owner_id"], poll_id=poll["id"])
+        steps.append(f"2. Чтение опроса: РАБОТАЕТ (вариантов: {len(info['answers'])})")
+        ids = ",".join(str(a["id"]) for a in info["answers"])
+        group.call("polls.getVoters", owner_id=poll["owner_id"], poll_id=poll["id"], answer_ids=ids)
+        steps.append("3. Чтение списка голосовавших: РАБОТАЕТ")
+    except VKError as e:
+        steps.append(f"Следующий шаг НЕ РАБОТАЕТ ({e})")
+    print("\n".join(steps))
+    return 0
+
+
 def run():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--check-polls", action="store_true")
     args = ap.parse_args()
     cfg = rating.load_config()
     if args.check:
         return check(cfg)
+    if args.check_polls:
+        return check_polls(cfg)
     if not cfg["bot"].get("chat_peer_group") or not cfg["bot"].get("chat_peer_user"):
         print("Бот не настроен: в config.yaml не указаны номера беседы. Запустите проверку ключей.")
         rating.update(cfg, rating.web_getter())
