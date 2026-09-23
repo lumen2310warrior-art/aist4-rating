@@ -119,12 +119,19 @@ def parse_match(html, match_id):
     dm = re.search(r"\b(\d{2}\.\d{2})\s+(\d{2}:\d{2})\b", clean(soup.get_text(" ")))
     date = f"{dm.group(1)} {dm.group(2)}" if dm else ""
 
+    events = {}
+    ev_re = re.compile(r"(\d{1,3})\s+([А-ЯЁA-Z][^,`\d]{2,40}?)\s*,\s*(\d{1,3})'\s*(\d{1,2})''")
+    for num, name, mm, ss in ev_re.findall(soup.get_text(" ")):
+        key = (clean(name), int(mm) * 60 + int(ss))
+        events.setdefault(key, {"name": key[0], "second": key[1]})
+    events = sorted(events.values(), key=lambda e: e["second"])
+
     if home is None or len(lineups) < 2:
         raise ValueError(f"Протокол матча {match_id} не распознан: "
                          f"заголовок={'да' if home else 'нет'}, таблиц составов={len(lineups)}")
     return {"match_id": match_id, "home": home, "away": away,
             "home_goals": hs, "away_goals": aws, "date": date,
-            "home_id": team_ids.get("home"), "away_id": team_ids.get("away"),
+            "home_id": team_ids.get("home"), "away_id": team_ids.get("away"), "events": events,
             "lineups": {"home": lineups[0], "away": lineups[1]}}
 
 

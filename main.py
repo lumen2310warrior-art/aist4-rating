@@ -17,6 +17,7 @@ import yaml
 from rfl.parser import norm_team, parse_match, parse_team_calendar
 from rfl.scoring import division_stats, expected_goals, score_players
 from rfl.site import render
+from rfl.timeutil import now_local
 
 ROOT = pathlib.Path(__file__).parent
 CACHE = ROOT / "data" / "cache"
@@ -72,13 +73,16 @@ def resolve_mvp(entries, players, match_id, warnings):
     return ids
 
 
-def get_protocol(match_id, get_html, use_cache):
+def get_protocol(match_id, get_html, use_cache, fresh):
+    """Протокол из кэша или с сайта. Номера впервые загруженных матчей добавляются в fresh."""
     path = CACHE / f"match_{match_id}.json"
     if use_cache and path.exists():
         return json.loads(path.read_text(encoding="utf-8"))
     proto = parse_match(get_html(f"{BASE}/match/{match_id}"), match_id)
-    if use_cache and proto["home_goals"] is not None:
-        path.write_text(json.dumps(proto, ensure_ascii=False, indent=1), encoding="utf-8")
+    if proto["home_goals"] is not None:
+        fresh.add(match_id)
+        if use_cache:
+            path.write_text(json.dumps(proto, ensure_ascii=False, indent=1), encoding="utf-8")
     return proto
 
 
@@ -109,6 +113,7 @@ def collect(cfg, get_html, use_cache, warnings):
     # 1. Свои матчи: страница команды (адрес без параметров, разрешен правилами сайта).
     #    Список копится в data/our_matches.json, чтобы матчи не терялись при смене турнира на странице.
     index = load_index() if use_cache else {}
+    upcoming = []
     try:
         tournament, cal = parse_team_calendar(get_html(f"{BASE}/team/{team['rfll_id']}/calendar"))
         group = group_of(tournament, cfg)
@@ -117,6 +122,10 @@ def collect(cfg, get_html, use_cache, warnings):
         for m in cal:
             if m["home_goals"] is not None and group:
                 index[str(m["match_id"])] = {"group": group, "tournament": tournament, "date": m["date"]}
+            elif m["home_goals"] is None:
+                opp = m["away"] if norm_team(m["home"]) == team_key else m["home"]
+                upcoming.append({"match_id": m["match_id"], "opponent": opp, "date": m["date"],
+                                 "group": group, "tournament": tournament})
     except Exception as exc:
         warnings.append(f"Страница команды не загружена ({exc})")
     for mid in load_manual_cup(ROOT / "data" / "cup_matches.csv"):
@@ -127,9 +136,10 @@ def collect(cfg, get_html, use_cache, warnings):
 
     # 2. Протоколы своих матчей.
     games = []
+    fresh = set()
     for mid, meta in sorted(index.items(), key=lambda x: int(x[0])):
         try:
-            proto = get_protocol(int(mid), get_html, use_cache)
+            proto = get_protocol(int(mid), get_html, use_cache, fresh)
         except Exception as exc:
             warnings.append(f"Матч {mid}: протокол не загружен ({exc})")
             continue
@@ -139,19 +149,32 @@ def collect(cfg, get_html, use_cache, warnings):
         games.append((meta, proto, home_side))
 
     # 3. Календари соперников: их результативность и общее среднее по лиге.
-    pool = {}
-    loaded = set()
+    #    Загружаются заново только при появлении нового матча или раз в неделю.
+    opp_path = ROOT / "data" / "opponents.json"
+    cached = json.loads(opp_path.read_text(encoding="utf-8")) if use_cache and opp_path.exists() else {}
+    needed = set()
     for meta, proto, home_side in games:
         opp_id = proto["away_id"] if home_side else proto["home_id"]
-        if not opp_id or opp_id in loaded:
-            continue
-        loaded.add(opp_id)
-        try:
-            _, opp_cal = parse_team_calendar(get_html(f"{BASE}/team/{opp_id}/calendar"))
-            for m in opp_cal:
-                pool[m["match_id"]] = m
-        except Exception as exc:
-            warnings.append(f"Календарь соперника {proto['away' if home_side else 'home']} не загружен ({exc})")
+        if opp_id:
+            needed.add(opp_id)
+    age_ok = False
+    if cached.get("fetched"):
+        age_ok = (now_local() - dt.datetime.fromisoformat(cached["fetched"])).days < 7
+    have = set(cached.get("teams", []))
+    if cached and age_ok and not fresh and needed <= have:
+        pool = {int(k): v for k, v in cached["pool"].items()}
+    else:
+        pool = {}
+        for opp_id in sorted(needed):
+            try:
+                _, opp_cal = parse_team_calendar(get_html(f"{BASE}/team/{opp_id}/calendar"))
+                for m in opp_cal:
+                    pool[m["match_id"]] = m
+            except Exception as exc:
+                warnings.append(f"Календарь соперника {opp_id} не загружен ({exc})")
+        if use_cache:
+            opp_path.write_text(json.dumps({"fetched": now_local().isoformat(), "teams": sorted(needed),
+                                            "pool": pool}, ensure_ascii=False), encoding="utf-8")
     stats = division_stats(list(pool.values()))
 
     # 4. Сборка матчей для расчета.
@@ -169,9 +192,9 @@ def collect(cfg, get_html, use_cache, warnings):
             "expected": round(expected, 2), "expected_basis": basis,
             "players": players, "mvp_ids": mvp_ids,
             "mvp_names": [p["name"] for p in players if p["player_id"] in mvp_ids],
-            "group": meta["group"],
+            "group": meta["group"], "events": proto.get("events", []),
         })
-    return groups
+    return groups, upcoming, fresh
 
 
 def build(cfg, groups):
@@ -193,30 +216,38 @@ def public_match(m):
                               "expected", "expected_basis", "mvp_names", "group")}
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--demo", action="store_true", help="собрать страницу по сохраненным образцам")
-    args = ap.parse_args()
-
-    cfg = yaml.safe_load((ROOT / "config.yaml").read_text(encoding="utf-8"))
+def update(cfg, getter, use_cache=True):
+    """Полный цикл: сбор, расчет, запись docs/. Возвращает данные для бота."""
     CACHE.mkdir(parents=True, exist_ok=True)
     warnings = []
-    getter = fixture_getter() if args.demo else web_getter()
-    groups = collect(cfg, getter, use_cache=not args.demo, warnings=warnings)
+    groups, upcoming, fresh = collect(cfg, getter, use_cache=use_cache, warnings=warnings)
     data = {"team": cfg["team"]["name"], "title": cfg["site"]["title"],
-            "updated": dt.datetime.now(dt.timezone(dt.timedelta(hours=3))).strftime("%d.%m.%Y %H:%M"),
+            "updated": now_local().strftime("%d.%m.%Y %H:%M"),
             "weights": cfg["weights"], "gk_factor": cfg["goalkeeper"]["factor"],
             "groups": build(cfg, groups), "warnings": warnings}
-
     docs = ROOT / "docs"
     docs.mkdir(exist_ok=True)
     (docs / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     (docs / "index.html").write_text(render(data), encoding="utf-8")
-
     for w in warnings:
         print("ВНИМАНИЕ:", w)
-    n = len(data["groups"]["all"]["matches"])
-    print(f"Готово: матчей {n}, игроков {len(data['groups']['all']['players'])}")
+    print(f"Рейтинг: матчей {len(data['groups']['all']['matches'])}, "
+          f"игроков {len(data['groups']['all']['players'])}, новых протоколов {len(fresh)}")
+    all_matches = [m for g in groups.values() for m in g["matches"]]
+    return {"data": data, "matches": all_matches, "upcoming": upcoming, "fresh": fresh}
+
+
+def load_config():
+    return yaml.safe_load((ROOT / "config.yaml").read_text(encoding="utf-8"))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--demo", action="store_true", help="собрать страницу по сохраненным образцам")
+    args = ap.parse_args()
+    cfg = load_config()
+    getter = fixture_getter() if args.demo else web_getter()
+    update(cfg, getter, use_cache=not args.demo)
     return 0
 
 
