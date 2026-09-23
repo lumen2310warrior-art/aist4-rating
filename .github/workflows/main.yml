@@ -8,7 +8,7 @@ on:
       mode:
         description: "Режим запуска"
         type: choice
-        options: ["обычный", "пробный", "проверка ключей"]
+        options: ["обычный", "пробный", "проверка ключей", "проверка опросов"]
         default: "обычный"
 
 permissions:
@@ -39,6 +39,7 @@ jobs:
           MODE: ${{ github.event.inputs.mode || 'обычный' }}
         run: |
           if [ "$MODE" = "проверка ключей" ]; then python bot.py --check; exit $?; fi
+          if [ "$MODE" = "проверка опросов" ]; then python bot.py --check-polls; exit $?; fi
           if [ "$MODE" = "пробный" ]; then python bot.py --dry-run; exit $?; fi
           python bot.py
       - name: Сохранить изменения
