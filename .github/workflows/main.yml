@@ -2,11 +2,21 @@ name: Обновление рейтинга
 
 on:
   schedule:
-    - cron: "0 5 * * *"      # каждый день в 08:00 по Москве
-  workflow_dispatch:           # кнопка ручного запуска во вкладке Actions
+    - cron: "7 * * * *"          # каждый час; бот сам решает, есть ли работа
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Режим запуска"
+        type: choice
+        options: ["обычный", "пробный", "проверка ключей"]
+        default: "обычный"
 
 permissions:
   contents: write
+
+concurrency:
+  group: rating
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -16,12 +26,28 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+      - name: Распознавание текста (русский)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-rus > /dev/null
       - run: pip install -r requirements.txt
-      - run: python main.py
-      - name: Сохранить обновленную страницу
+      - name: Бот и рейтинг
+        env:
+          VK_GROUP_TOKEN: ${{ secrets.VK_GROUP_TOKEN }}
+          VK_USER_TOKEN: ${{ secrets.VK_USER_TOKEN }}
+          MODE: ${{ github.event.inputs.mode || 'обычный' }}
+        run: |
+          if [ "$MODE" = "проверка ключей" ]; then python bot.py --check; exit $?; fi
+          if [ "$MODE" = "пробный" ]; then python bot.py --dry-run; exit $?; fi
+          python bot.py
+      - name: Сохранить изменения
+        if: ${{ (github.event.inputs.mode || 'обычный') == 'обычный' }}
         run: |
           git config user.name "rating-bot"
           git config user.email "rating-bot@users.noreply.github.com"
           git add docs data
-          git diff --cached --quiet || git commit -m "Обновление рейтинга"
+          git diff --cached --quiet && exit 0
+          git commit -m "Обновление рейтинга"
+          git pull --rebase --autostash
           git push
