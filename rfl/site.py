@@ -113,31 +113,7 @@ h2{font:500 22px/1.2 var(--display);margin:48px 0 14px}
 .blk h4{font:500 16px var(--display);margin:0 0 10px}
 .kv{display:grid;grid-template-columns:1fr auto;gap:6px 16px;font-size:15px}
 .kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
-.dynwrap{position:relative;overflow-x:auto;overflow-y:hidden;margin:6px -4px 0;padding:0 4px;-webkit-overflow-scrolling:touch}
-.dyn{width:100%;height:auto;display:block;font-family:var(--text)}
-.dyn .sec{font-size:11px;fill:var(--muted);font-weight:500;letter-spacing:.02em}
-.dyn .ax{font-size:10px;fill:var(--muted);font-variant-numeric:tabular-nums}
-.dyn .grid{stroke:#E3E8EC;stroke-width:1}
-.dyn .avg{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 4}
-.dyn .roll{fill:none;stroke:var(--line);stroke-width:2.5;stroke-linejoin:round}
-.dyn .rolld{fill:var(--paper);stroke:var(--line);stroke-width:2}
-.dyn .miss{fill:#C9D2D9}
-.dyn .ev-g{fill:var(--court)} .dyn .ev-a{fill:var(--paper);stroke:var(--court);stroke-width:1.8}
-.dyn .ev-s{fill:var(--line)} .dyn .ev-y{fill:var(--yellow)} .dyn .ev-r{fill:var(--red)}
-.dyn .rank{fill:none;stroke:var(--court-deep);stroke-width:2.5;stroke-linejoin:round}
-.dyn .rankd{fill:var(--court-deep)} .dyn .rankm{fill:#9FB0BD}
-.dyn .gk-good{font:700 12px var(--text);fill:var(--court)} .dyn .gk-bad{font:700 12px var(--text);fill:#B5473F}
-.lg .gkl{color:var(--court)}
-.dyn .rl{font:800 13px var(--display);fill:var(--court-deep)}
-.dyn .hit{fill:transparent;cursor:pointer} .dyn .hit.on{fill:rgba(27,91,132,.07)}
-.tip{position:absolute;top:0;z-index:2;background:var(--ink);color:#fff;font-size:13px;line-height:1.4;padding:8px 10px;border-radius:8px;
-  width:max-content;max-width:240px;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.2)}
-.formline{font-size:14px;color:var(--muted);margin:-2px 0 4px}
-.formline .up{color:var(--court);font-weight:700}.formline .down{color:#9A322C;font-weight:700}.formline .flat{color:var(--ink);font-weight:700}
-.lg .lroll{background:none;border-top:3px solid var(--line);height:0;width:14px;border-radius:0;vertical-align:3px}
-.lg .lavg{background:none;border-top:2px dashed var(--muted);height:0;width:14px;border-radius:0;vertical-align:3px}
-.lg .lg-g{background:var(--court);border-radius:50%} .lg .lg-a{background:var(--paper);border:2px solid var(--court);border-radius:50%;width:8px;height:8px}
-.lg .lg-miss{background:#C9D2D9;border-radius:50%;width:7px;height:7px}
+.chart svg{width:100%;height:auto;display:block}
 .lg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted);margin-top:8px}
 .lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:0}
 .log{overflow-x:auto}
@@ -266,109 +242,15 @@ function collect(id, grp){
     if(e) apps.push({m, e, pts: ptsOf(e,m), res: resOf(m)}); }
   return {g, ms, apps};
 }
-function dynamics(id, grp, avail){
-  /* ось X: все матчи команды по порядку; для каждого: баллы игрока, события, место в рейтинге после матча */
-  const g = D.groups[grp], ms = chrono(g.matches), totals = {}, played = {};
-  const cols = ms.map(m => {
-    for(const e of m.lineup){ totals[e.id] = (totals[e.id]||0) + ptsOf(e,m); played[e.id] = 1; }
-    const e = m.lineup.find(x => x.id === id);
-    const mine = totals[id];
-    const rank = mine === undefined ? null : 1 + Object.keys(totals).filter(k => played[k] && totals[k] > mine + 1e-9).length;
-    return {m, e, pts: e ? ptsOf(e,m) : null, res: resOf(m), rank, of: Object.keys(played).length};
-  });
-  const myPts = cols.filter(c => c.e).map(c => c.pts);
-  const avgAll = (() => { let s=0, n=0; for(const m of ms) for(const e of m.lineup){ s += ptsOf(e,m); n++; } return n ? s/n : 0; })();
-  // скользящее среднее по трем последним сыгранным матчам игрока
-  const roll = []; const buf = [];
-  cols.forEach((c,i) => { if(c.e){ buf.push(c.pts); if(buf.length>3) buf.shift(); roll[i] = buf.reduce((s,x)=>s+x,0)/buf.length; } });
-  const n = cols.length, L = 34, R = 12;
-  const cw = Math.max(18, Math.min(34, Math.floor((avail - L - R) / Math.max(n,1))));  // подгонка под ширину экрана
-  const bw = Math.min(22, cw - 6), W = L + n*cw + R;
-  const bTop = 26, bH = 120, bBot = bTop + bH;             // баллы
-  const sTop = bBot + 34, sH = 34;                          // события
-  const xLab = sTop + sH + 16;                              // даты
-  const rTop = xLab + 40, rH = 90, rBot = rTop + rH;        // место
-  const H = rBot + 28;
-  const maxP = Math.max(...myPts, avgAll, 1) * 1.1;
-  const y = v => bBot - v/maxP*bH;
-  const cx = i => L + i*cw + cw/2;
-  const colr = {w:'var(--court)', d:'#9FB0BD', l:'#D98F89'};
-  const hasGk = cols.some(c => c.e && c.e.gk);
-  let svg = `<svg class="dyn" viewBox="0 0 ${W} ${H}" style="min-width:${W}px" role="img" aria-label="Динамика игрока по матчам">`;
-  // подписи разделов
-  svg += `<text class="sec" x="0" y="12">Баллы за матч</text><text class="sec" x="0" y="${sTop-10}">Голы, передачи, лучший игрок, карточки${hasGk ? ', пропущено в воротах' : ''}</text><text class="sec" x="0" y="${rTop-14}">Место в рейтинге после матча</text>`;
-  // сетка и средний уровень команды
-  [0, maxP/2].forEach(v => { svg += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" class="grid"/><text class="ax" x="${L-6}" y="${y(v)+4}" text-anchor="end">${fmt(v)}</text>`; });
-  svg += `<line x1="${L}" x2="${W-R}" y1="${y(avgAll)}" y2="${y(avgAll)}" class="avg"/>`;
-  // столбцы
-  cols.forEach((c,i) => {
-    const x = cx(i);
-    if(c.e){ const h = Math.max(2, bBot - y(c.pts));
-      svg += `<rect x="${x-bw/2}" y="${bBot-h}" width="${bw}" height="${h}" rx="3" fill="${colr[c.res]}"/>`; }
-    else svg += `<circle cx="${x}" cy="${bBot-4}" r="3" class="miss"/>`;
-  });
-  // скользящее среднее
-  const pts = cols.map((c,i) => roll[i] !== undefined ? `${cx(i)},${y(roll[i])}` : null).filter(Boolean);
-  if(pts.length > 1) svg += `<polyline points="${pts.join(' ')}" class="roll"/>`;
-  pts.forEach(p => { const [a,b2] = p.split(','); svg += `<circle cx="${a}" cy="${b2}" r="3" class="rolld"/>`; });
-  // лента событий
-  cols.forEach((c,i) => { if(!c.e) return; const x = cx(i); let yy = sTop + 6; const items = [];
-    if(c.e.gk){ svg += `<text x="${x}" y="${sTop + sH - 2}" text-anchor="middle" class="${c.m.conceded < c.m.expected ? 'gk-good' : 'gk-bad'}">${c.m.conceded}</text>`; }
-    for(let k=0;k<c.e.g;k++) items.push('g'); for(let k=0;k<c.e.a;k++) items.push('a');
-    if(c.e.mvp) items.push('s'); for(let k=0;k<c.e.y;k++) items.push('y'); for(let k=0;k<c.e.r;k++) items.push('r');
-    const per = cw >= 27 ? 3 : 2, dx = cw >= 27 ? 9 : 7;
-    items.forEach((t,k) => { const px = x + ((k%per) - (Math.min(items.length,per)-1)/2)*dx, py = yy + Math.floor(k/per)*10;
-      if(t==='g') svg += `<circle cx="${px}" cy="${py}" r="4" class="ev-g"/>`;
-      else if(t==='a') svg += `<circle cx="${px}" cy="${py}" r="3.3" class="ev-a"/>`;
-      else if(t==='s') svg += `<path d="M${px} ${py-5} L${px+1.5} ${py-1.5} L${px+5} ${py-1.2} L${px+2.3} ${py+1.2} L${px+3.1} ${py+4.8} L${px} ${py+2.9} L${px-3.1} ${py+4.8} L${px-2.3} ${py+1.2} L${px-5} ${py-1.2} L${px-1.5} ${py-1.5}Z" class="ev-s"/>`;
-      else svg += `<rect x="${px-3}" y="${py-4}" width="6" height="8" rx="1" class="${t==='y'?'ev-y':'ev-r'}"/>`; });
-  });
-  // даты
-  const step = cw < 22 ? 3 : cw < 30 ? 2 : 1;
-  cols.forEach((c,i) => { if(i % step === 0) svg += `<text class="ax" x="${cx(i)}" y="${xLab}" text-anchor="middle">${sdate(c.m.date)}</text>`; });
-  // место в рейтинге (1 сверху)
-  const maxR = Math.max(...cols.map(c => c.rank || 0), 2);
-  const ry = r => rTop + (r-1)/(maxR-1)*rH;
-  [1, maxR].forEach(r => { svg += `<line x1="${L}" x2="${W-R}" y1="${ry(r)}" y2="${ry(r)}" class="grid"/><text class="ax" x="${L-6}" y="${ry(r)+4}" text-anchor="end">${r}</text>`; });
-  const rp = cols.map((c,i) => c.rank ? [cx(i), ry(c.rank), c] : null).filter(Boolean);
-  if(rp.length > 1) svg += `<polyline points="${rp.map(p=>p[0]+','+p[1]).join(' ')}" class="rank"/>`;
-  rp.forEach(([x,yv,c]) => { svg += `<circle cx="${x}" cy="${yv}" r="${c.e?4:2.5}" class="${c.e?'rankd':'rankm'}"/>`; });
-  if(rp.length){ const [x,yv,c] = rp[rp.length-1]; svg += `<text class="rl" x="${x}" y="${yv-9}" text-anchor="middle">${c.rank}</text>`; }
-  // невидимые колонки для подсказок
-  cols.forEach((c,i) => { svg += `<rect class="hit" data-i="${i}" x="${L+i*cw}" y="0" width="${cw}" height="${H}"/>`; });
-  svg += `</svg>`;
-  // сводка формы
-  const last3 = myPts.slice(-3), season = myPts.reduce((s,x)=>s+x,0)/Math.max(myPts.length,1);
-  const f3 = last3.length ? last3.reduce((s,x)=>s+x,0)/last3.length : 0;
-  const diff = f3 - season;
-  const trend = myPts.length < 4 ? '' : diff > 0.25 ? '<span class="up">▲ форма выше среднего</span>'
-              : diff < -0.25 ? '<span class="down">▼ форма ниже среднего</span>' : '<span class="flat">● стабильная форма</span>';
-  const head = `<div class="formline">${trend} Последние ${last3.length}: ${fmt(f3)} за матч, в среднем за турнир ${fmt(season)}, у команды ${fmt(avgAll)}</div>`;
-  const legend = `<div class="lg"><span><i style="background:var(--court)"></i>победа</span><span><i style="background:#9FB0BD"></i>ничья</span>
-    <span><i style="background:#D98F89"></i>поражение</span><span><i class="lroll"></i>среднее за 3 матча</span><span><i class="lavg"></i>средний балл игрока команды</span>
-    <span><i class="lg-g"></i>гол</span><span><i class="lg-a"></i>передача</span><span class="star">★</span><span style="margin-left:-12px">лучший игрок</span>
-    <span><i class="lg-miss"></i>не играл</span>${hasGk ? '<span><b class="gkl">7</b> пропущено в воротах (синим: меньше ожидаемого)</span>' : ''}</div>`;
-  return {html: head + `<div class="dynwrap" id="dynwrap">${svg}<div class="tip" id="tip" hidden></div></div>` + legend, cols};
-}
-function bindDynamics(cols){
-  const wrap = document.getElementById('dynwrap'); if(!wrap) return;
-  const tip = document.getElementById('tip');
-  wrap.scrollLeft = wrap.scrollWidth;          // сразу к последним матчам
-  const RESW = {w:'победа', d:'ничья', l:'поражение'};
-  const show = el => {
-    const c = cols[+el.dataset.i], m = c.m;
-    wrap.querySelectorAll('.hit.on').forEach(x => x.classList.remove('on')); el.classList.add('on');
-    tip.innerHTML = `<b>${sdate(m.date)}, ${esc(m.opponent)}</b><br>Счет ${m.scored}:${m.conceded}, ${RESW[c.res]}<br>` +
-      (c.e ? `Голы ${c.e.g}, передачи ${c.e.a}${c.e.mvp ? ', лучший игрок' : ''}${c.e.y ? ', ЖК' : ''}${c.e.r ? ', КК' : ''}${c.e.gk ? ', в воротах' : ''}<br>Баллы: <b>${fmt(c.pts)}</b>`
-           : 'Не играл') + (c.rank ? `<br>Место после матча: ${c.rank}` : '');
-    tip.hidden = false;
-    const r = el.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
-    let left = r.left - wr.left + wrap.scrollLeft + r.width/2 - tip.offsetWidth/2;
-    left = Math.max(wrap.scrollLeft + 4, Math.min(left, wrap.scrollLeft + wrap.clientWidth - tip.offsetWidth - 4));
-    tip.style.left = left + 'px';
-  };
-  wrap.querySelectorAll('.hit').forEach(el => { el.addEventListener('pointerenter', () => show(el)); el.addEventListener('click', () => show(el)); });
-  wrap.addEventListener('pointerleave', e => { if(e.pointerType === 'mouse'){ tip.hidden = true; wrap.querySelectorAll('.hit.on').forEach(x => x.classList.remove('on')); } });
+function chartSVG(apps){
+  const n = apps.length, bw = 22, gap = 6, H = 120, top = 16;
+  const max = Math.max(...apps.map(a=>a.pts), 1);
+  const W = Math.max(n*(bw+gap)+gap, 10*(bw+gap));
+  const col = {w:'var(--court)', d:'#9FB0BD', l:'#D98F89'};
+  let bars = apps.map((a,i) => { const h = Math.max(2, (a.pts/max)*(H-top-4)); const x = gap+i*(bw+gap);
+    return `<rect x="${x}" y="${H-h}" width="${bw}" height="${h}" rx="3" fill="${col[a.res]}"><title>${sdate(a.m.date)}, ${esc(a.m.opponent)} ${scoreLine(a.m)}: ${fmt(a.pts)}</title></rect>` +
+      (a.e.mvp ? `<circle cx="${x+bw/2}" cy="${H-h-7}" r="4" fill="var(--line)"/>` : ''); }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Баллы по матчам">${bars}</svg>`;
 }
 function streaks(apps){ let best=0, cur=0; for(const a of apps){ if(a.e.g+a.e.a>0){ cur++; best=Math.max(best,cur); } else cur=0; } return {best, cur}; }
 
@@ -394,6 +276,7 @@ function openCard(id){
   const teamGoals = apps.reduce((s,a)=>s+a.m.scored,0), conc = apps.reduce((s,a)=>s+a.m.conceded,0);
   const best = apps.reduce((b,a)=> a.pts>b.pts ? a : b, apps[0]);
   const st = streaks(apps);
+  const last5 = apps.slice(-5);
   html += `<div class="tiles">
     <div class="tile hl"><b>${fmt(row.total ?? 0)}</b><span>общий балл · ${rankT} место</span></div>
     <div class="tile"><b>${fmt(row.per_match ?? 0)}</b><span>за матч · ${rankP} место</span></div>
@@ -432,9 +315,10 @@ function openCard(id){
   html += `<div class="blk"><h4>Лучший матч</h4><dl class="kv">
     <dt>${sdate(best.m.date)}, соперник ${esc(best.m.opponent)}, счет ${scoreLine(best.m)}</dt><dd>${fmt(best.pts)}</dd>
     <dt>Голы и передачи</dt><dd>${best.e.g} и ${best.e.a}</dd></dl></div>`;
-  const avail = Math.min(window.innerWidth, 640) - (window.innerWidth <= 560 ? 28 : 40) - 34;
-  const dyn = dynamics(id, group, avail);
-  html += `<div class="blk chart"><h4>Динамика от матча к матчу</h4>${dyn.html}</div>`;
+  html += `<div class="blk chart"><h4>Баллы по матчам</h4>${chartSVG(apps)}
+    <div class="lg"><span><i style="background:var(--court)"></i>победа</span><span><i style="background:#9FB0BD"></i>ничья</span>
+    <span><i style="background:#D98F89"></i>поражение</span><span><i style="background:var(--line);border-radius:50%"></i>лучший игрок</span></div>
+    <p class="note" style="margin-bottom:0">Последние ${last5.length}: ${last5.map(a=>fmt(a.pts)).join(', ')} (в среднем ${fmt(last5.reduce((s,a)=>s+a.pts,0)/last5.length)} за матч)</p></div>`;
   html += `<div class="blk log"><h4>Все матчи</h4><table><thead><tr><th class="l">Дата</th><th class="l">Соперник</th><th title="Счет: команда : соперник">Счет</th>
     <th>Г</th><th>П</th><th>ЖК</th><th>КК</th><th>ЛИ</th><th>Балл</th></tr></thead><tbody>` +
     [...apps].reverse().map(a => `<tr><td class="l">${sdate(a.m.date)}</td><td class="l">${esc(a.m.opponent)}${a.e.gk?' (вр.)':''}</td>
@@ -442,7 +326,7 @@ function openCard(id){
       <td>${z(a.e.g)}</td><td>${z(a.e.a)}</td><td>${z(a.e.y)}</td><td>${z(a.e.r)}</td>
       <td>${a.e.mvp?'<span class="star">★</span>':''}</td><td><b>${fmt(a.pts)}</b></td></tr>`).join('') +
     `</tbody></table></div></div>`;
-  panel.innerHTML = html; bindCard(id); bindDynamics(dyn.cols);
+  panel.innerHTML = html; bindCard(id);
 }
 function bindCard(id){
   const sheet = document.getElementById('sheet');
