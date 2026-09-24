@@ -212,8 +212,13 @@ def build(cfg, groups):
 
 
 def public_match(m):
-    return {k: m[k] for k in ("match_id", "date", "opponent", "home", "scored", "conceded",
-                              "expected", "expected_basis", "mvp_names", "group")}
+    """Матч для страницы: счет, соперник и состав с личной статистикой каждого игрока."""
+    out = {k: m[k] for k in ("match_id", "date", "opponent", "home", "scored", "conceded",
+                             "expected", "expected_basis", "mvp_names", "group")}
+    out["lineup"] = [{"id": p["player_id"], "g": p["goals"], "a": p["assists"], "y": p["yellow"],
+                      "r": p["red"], "gk": 1 if p["position"] == "Вратарь" else 0,
+                      "mvp": 1 if p["player_id"] in m["mvp_ids"] else 0} for p in m["players"]]
+    return out
 
 
 def update(cfg, getter, use_cache=True):
