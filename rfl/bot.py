@@ -1,8 +1,8 @@
-"""Бот команды: расписание, опрос о явке, сводка матча, опрос о лучшем игроке, месячный рейтинг.
+"""Бот команды: расписание по афише лиги, сводка матча, выбор лучшего игрока, месячный рейтинг.
 
 Запускается раз в час. Все, что бот «помнит» между запусками, хранится в data/bot_state.json.
 Сообщество (ключ group) пишет в беседу и в личные сообщения капитану и помощникам.
-Технический аккаунт (ключ user) создает опросы и читает афиши на стене лиги.
+Сервисный ключ собственного приложения (ключ service) нужен только для чтения афиш на стене лиги.
 """
 import csv
 import datetime as dt
@@ -20,7 +20,6 @@ from .vk import VK, VKError
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 STATE = ROOT / "data" / "bot_state.json"
 MVP_CSV = ROOT / "data" / "mvp.csv"
-OVERRIDES = ROOT / "data" / "vk_players.csv"
 MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
               "сентября", "октября", "ноября", "декабря"]
 MONTHS_NOM = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август",
@@ -86,12 +85,12 @@ def save_state(state):
 
 
 class Bot:
-    def __init__(self, cfg, group_token, user_token, dry_run=False, rating=None):
+    def __init__(self, cfg, group_token, service_token, dry_run=False, rating=None):
         self.cfg = cfg
         self.b = cfg["bot"]
         self.v = cfg["vk"]
         self.group = VK(group_token, "сообщество", dry_run)
-        self.user = VK(user_token, "технический аккаунт", dry_run)
+        self.service = VK(service_token, "приложение", dry_run)
         self.dry = dry_run
         self.rating = rating          # модуль main: update(), web_getter()
         self.state = load_state()
@@ -115,13 +114,6 @@ class Bot:
         ids = self.state["user_ids"]
         self.captain = ids[self.v["captain"]]
         self.assistants = [ids[a] for a in self.v["assistants"]]
-
-    def weight(self, uid):
-        if uid == self.captain:
-            return self.v["captain_weight"]
-        if uid in self.assistants:
-            return self.v["assistant_weight"]
-        return self.v["default_weight"]
 
     # ---------- вопросы в личных сообщениях ----------
 
@@ -264,8 +256,10 @@ class Bot:
         self.say(f"Матч с командой «{g['opponent']}» подтвержден")
 
     def check_posters(self):
+        if not self.service.token:
+            return  # сервисный ключ не задан: расписание берется только с сайта лиги
         try:
-            posts = self.user.call("wall.get", owner_id=-int(self.b["league_group_id"]), count=10)["items"]
+            posts = self.service.call("wall.get", owner_id=-int(self.b["league_group_id"]), count=10)["items"]
         except VKError as e:
             self.token_problem(e)
             return
@@ -328,23 +322,16 @@ class Bot:
 
     # ---------- опрос о явке ----------
 
-    def create_poll(self, question, answers, end):
-        poll = self.user.call("polls.create", question=question, add_answers=answers,
-                              is_anonymous=0, end_date=ts(end))
-        self.user.send(self.b["chat_peer_user"], "", attachment=f"poll{poll['owner_id']}_{poll['id']}")
-        return {"owner_id": poll["owner_id"], "id": poll["id"]}
-
-    def attendance_polls(self):
+    def announce_games(self):
+        """После подтверждения матч объявляется в беседе команды."""
         for key, g in self.state["games"].items():
             start = from_iso(g["start"])
-            if g["status"] == "confirmed" and not g.get("attendance") and start > self.now:
-                try:
-                    g["attendance"] = self.create_poll(
-                        f"Игра с командой «{g['opponent']}», {human(start)}, {self.venue_text(g.get('venue'))}. Кто будет?",
-                        ["Буду", "Не буду", "Под вопросом"], start)
-                    self.say(f"Опрос о явке на матч с командой «{g['opponent']}» опубликован")
-                except VKError as e:
-                    self.token_problem(e)
+            if g["status"] == "confirmed" and not g.get("announced") and start > self.now:
+                self.group.send(self.b["chat_peer_group"],
+                                f"Ближайшая игра: {self.cfg['team']['name']} и {g['opponent']}\n"
+                                f"{human(start)}, {self.venue_text(g.get('venue'))}")
+                g["announced"] = True
+                self.say(f"Матч с командой «{g['opponent']}» объявлен в беседе")
 
     # ---------- рейтинг, протоколы, сводки ----------
 
@@ -426,74 +413,16 @@ class Bot:
                          f"(ожидалось {str(m['expected']).replace('.', ',')})")
         lines.append(f"Протокол: https://rfll.ru/match/{m['match_id']}")
         self.group.send(self.b["chat_peer_group"], "\n".join(lines))
-        options = [p["name"] for p in players][:10]
-        if len(players) > 10:
-            self.say(f"В матче {m['match_id']} больше 10 игроков, в опрос вошли первые 10")
-        closes = self.now + dt.timedelta(hours=self.b["mvp_poll_hours"])
-        try:
-            poll = self.create_poll(f"Лучший игрок матча с командой «{m['opponent']}»", options, closes)
-        except VKError as e:
-            self.token_problem(e)
-            poll = None
-        g["mvp"] = {"stage": "poll", "poll": poll, "options": options, "closes": iso(closes),
-                    "players": players, "events": m.get("events", []), "expected": m["expected"],
-                    "conceded": m["conceded"]}
-        self.say(f"Сводка и опрос по матчу с командой «{m['opponent']}» опубликованы")
+        names = [p["name"] for p in players]
+        g["mvp"] = {"stage": "captain", "candidates": names, "players": players,
+                    "events": m.get("events", []), "expected": m["expected"], "conceded": m["conceded"],
+                    "deadline": iso(self.now + dt.timedelta(hours=self.b["captain_hours"]))}
+        lst = "\n".join(f"{i}. {n}" for i, n in enumerate(names, 1))
+        self.ask(self.captain, "mvp_captain", key,
+                 f"{score}. Выберите лучшего игрока матча, пришлите номер:\n{lst}", names)
+        self.say(f"Сводка по матчу с командой «{m['opponent']}» опубликована, вопрос капитану")
 
     # ---------- лучший игрок ----------
-
-    def overrides(self):
-        res = {}
-        if OVERRIDES.exists():
-            with OVERRIDES.open(encoding="utf-8") as f:
-                for row in csv.DictReader(f):
-                    vk_ref = (row.get("vk") or "").strip().rstrip("/").split("/")[-1]
-                    if vk_ref and row.get("player"):
-                        res[vk_ref] = row["player"].strip()
-        return res
-
-    def voter_player(self, user, names, over):
-        """Какому игроку принадлежит страница ВК: по ручной таблице или по имени и фамилии."""
-        for ref in (str(user["id"]), f"id{user['id']}", user.get("screen_name", "")):
-            if ref in over:
-                return over[ref]
-        vk_words = {norm_team(user.get("first_name")), norm_team(user.get("last_name"))}
-        hits = [n for n in names if set(norm_team(w) for w in n.split()[:2]) == vk_words]
-        return hits[0] if len(hits) == 1 else None
-
-    def count_votes(self, mvp):
-        poll = mvp["poll"]
-        info = self.user.call("polls.getById", owner_id=poll["owner_id"], poll_id=poll["id"])
-        answers = {a["id"]: a["text"] for a in info["answers"]}
-        voters = self.user.call("polls.getVoters", owner_id=poll["owner_id"], poll_id=poll["id"],
-                                answer_ids=",".join(map(str, answers)), fields="screen_name", count=1000)
-        over = self.overrides()
-        all_names = self.state.get("known_players", []) or mvp["options"]
-        totals = {name: 0.0 for name in mvp["options"]}
-        captain_pick, unmatched = None, []
-        for block in voters:
-            choice = answers.get(block["answer_id"])
-            for u in block["users"]["items"]:
-                owner = self.voter_player(u, all_names, over)
-                if owner is None:
-                    unmatched.append(u)
-                if owner == choice:
-                    continue  # голос за себя не засчитывается
-                totals[choice] = totals.get(choice, 0) + self.weight(u["id"])
-                if u["id"] == self.captain:
-                    captain_pick = choice
-        self.notify_unmatched(unmatched)
-        return totals, captain_pick
-
-    def notify_unmatched(self, users):
-        new = [u for u in users if u["id"] not in self.state["unmatched_notified"]]
-        if not new:
-            return
-        self.state["unmatched_notified"] += [u["id"] for u in new]
-        lst = "\n".join(f"{u.get('first_name', '')} {u.get('last_name', '')}: vk.ru/id{u['id']}" for u in new)
-        self.group.send(self.captain,
-                        "Эти страницы голосовали в опросе, но бот не смог сопоставить их с игроками. "
-                        "Если это игроки команды, впишите их в data/vk_players.csv:\n" + lst)
 
     def match_points(self, p, mvp):
         w = self.cfg["weights"]
@@ -534,34 +463,7 @@ class Bot:
             mvp = g.get("mvp")
             if not mvp or mvp.get("stage") == "done":
                 continue
-            if mvp["stage"] == "poll" and self.now >= from_iso(mvp["closes"]):
-                totals, captain_pick = ({}, None)
-                if mvp.get("poll"):
-                    try:
-                        totals, captain_pick = self.count_votes(mvp)
-                    except VKError as e:
-                        self.token_problem(e)
-                        continue
-                mvp["totals"] = totals
-                top = max(totals.values(), default=0)
-                leaders = [n for n, v in totals.items() if v == top and v > 0]
-                mvp["leaders"] = leaders
-                if len(leaders) == 1:
-                    self.set_mvp(key, leaders[0], f"опрос, {str(round(top, 1)).replace('.', ',')} балла голосов")
-                    continue
-                if captain_pick in leaders:
-                    self.set_mvp(key, captain_pick, "ничья решена голосом капитана")
-                    continue
-                cands = leaders or mvp["options"]
-                mvp.update(stage="captain", candidates=cands,
-                           deadline=iso(self.now + dt.timedelta(hours=self.b["captain_hours"])))
-                reason = "ничья в опросе" if leaders else "в опросе никто не проголосовал"
-                lst = "\n".join(f"{i}. {n}" for i, n in enumerate(cands, 1))
-                self.say(f"Лучший игрок не определен ({reason}), вопрос капитану")
-                self.ask(self.captain, "mvp_captain", key,
-                         f"Матч с командой «{g['opponent']}»: {reason}. Выберите лучшего игрока, пришлите номер:\n{lst}",
-                         cands)
-            elif mvp["stage"] == "captain" and self.now >= from_iso(mvp["deadline"]):
+            if mvp["stage"] == "captain" and self.now >= from_iso(mvp["deadline"]):
                 mvp.update(stage="assistants",
                            deadline=iso(self.now + dt.timedelta(hours=self.b["assistants_hours"])))
                 lst = "\n".join(f"{i}. {n}" for i, n in enumerate(mvp["candidates"], 1))
@@ -580,8 +482,7 @@ class Bot:
                 if len(leaders) == 1:
                     self.set_mvp(key, leaders[0], "решение помощников")
                 else:
-                    pool = mvp.get("leaders") or [p["name"] for p in mvp["players"]]
-                    self.set_mvp(key, self.by_formula(mvp, pool), "по баллам за матч")
+                    self.set_mvp(key, self.by_formula(mvp, mvp["candidates"]), "по баллам за матч")
 
     # ---------- месячный рейтинг ----------
 
@@ -616,15 +517,14 @@ class Bot:
 
     def token_problem(self, err):
         self.say(f"Ошибка ВКонтакте: {err}")
-        if getattr(err, "code", None) in (5, 27, 28):
+        if getattr(err, "code", None) in (5, 15, 27, 28, 30):
             day = f"{self.now:%Y-%m-%d}"
-            if self.state["alerts"].get("user_token") != day:
-                self.state["alerts"]["user_token"] = day
+            if self.state["alerts"].get("service_token") != day:
+                self.state["alerts"]["service_token"] = day
                 try:
                     self.group.send(self.captain,
-                                    "Бот не может работать от имени технического аккаунта: ключ доступа "
-                                    "недействителен или истек. Обновите его по инструкции в README "
-                                    "(раздел «Ключ технического аккаунта»).")
+                                    "Бот не может прочитать афиши лиги: сервисный ключ приложения не работает. "
+                                    "Расписание пока берется с сайта лиги. Проверьте ключ по README.")
                 except VKError:
                     pass
 
@@ -641,7 +541,7 @@ class Bot:
             res = self.run_rating()
             players = {p["name"] for m in res["matches"] for p in m["players"]}
             self.state["known_players"] = sorted(players)
-        self.attendance_polls()
+        self.announce_games()
         self.process_mvp()
         if self.rebuild:
             res = self.run_rating()

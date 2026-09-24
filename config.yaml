@@ -33,10 +33,7 @@ goalkeeper:
 vk:
   group_id: 241645516
   captain: "lumwar"
-  captain_weight: 1.5
   assistants: ["alexander__eremeev", "alex_khait", "id30136141", "ivkaur"]
-  assistant_weight: 1.2
-  default_weight: 1.0
 
 site:
   title: "Рейтинг игроков Аист-4"
@@ -45,12 +42,10 @@ site:
 bot:
   league_group_id: 48420578          # сообщество лиги, где публикуются афиши с расписанием
   poster_aliases: ["АИСТ-4"]         # как команда пишется на афише
-  chat_peer_group: 0                 # номер беседы команды для сообщества (покажет проверка ключей)
-  chat_peer_user: 0                  # номер той же беседы для технического аккаунта
+  chat_peer_group: 0                 # номер беседы команды (покажет «проверка ключей»)
   site_url: "https://lumen2310warrior-art.github.io/aist4-rating/"
   confirm_hours: 12                  # ожидание подтверждения расписания капитаном
-  mvp_poll_hours: 24                 # длительность опроса о лучшем игроке
-  captain_hours: 48                  # ожидание личного выбора капитана
+  captain_hours: 48                  # ожидание выбора лучшего игрока капитаном
   assistants_hours: 24               # голосование помощников
   protocol_delay_hours: 2            # начинать искать протокол через N часов после начала матча
   protocol_search_hours: 72          # искать протокол не дольше N часов
