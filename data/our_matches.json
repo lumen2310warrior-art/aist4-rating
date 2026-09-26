@@ -103,5 +103,10 @@
   "group": "cup",
   "tournament": "Кубок",
   "date": ""
+ },
+ "39162": {
+  "group": "championship",
+  "tournament": "Чемпионат-2026",
+  "date": "26 сентября 19:40"
  }
 }

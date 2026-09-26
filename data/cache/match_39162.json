@@ -1,0 +1,272 @@
+{
+ "match_id": 39162,
+ "home": "Аист-4",
+ "away": "Титаны",
+ "home_goals": 4,
+ "away_goals": 5,
+ "date": "26.09 19:40",
+ "home_id": 827,
+ "away_id": 942,
+ "events": [
+  {
+   "name": "Овсянников Роман",
+   "second": 24
+  },
+  {
+   "name": "Курмычкин Рамиль",
+   "second": 223
+  },
+  {
+   "name": "Глухов Максим",
+   "second": 420
+  },
+  {
+   "name": "Акимов Артем",
+   "second": 836
+  },
+  {
+   "name": "Вчерашний Тигран",
+   "second": 930
+  },
+  {
+   "name": "Ахметов Станислав",
+   "second": 1044
+  },
+  {
+   "name": "Акимов Артем",
+   "second": 1051
+  },
+  {
+   "name": "Демидов Данила",
+   "second": 1081
+  },
+  {
+   "name": "Зайко Андрей",
+   "second": 1125
+  },
+  {
+   "name": "Вчерашний Тигран",
+   "second": 1982
+  },
+  {
+   "name": "Ахметов Станислав",
+   "second": 2175
+  },
+  {
+   "name": "Селезнев Егор",
+   "second": 2219
+  },
+  {
+   "name": "Курмычкин Рамиль",
+   "second": 2350
+  },
+  {
+   "name": "Нуруллаев Эльшад",
+   "second": 2451
+  },
+  {
+   "name": "Селезнев Егор",
+   "second": 3065
+  },
+  {
+   "name": "Глухов Максим",
+   "second": 3116
+  }
+ ],
+ "lineups": {
+  "home": [
+   {
+    "player_id": 12696,
+    "name": "Воинцев Алексей",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16426,
+    "name": "Акимов Артем",
+    "position": "",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 16864,
+    "name": "Селезнев Егор",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8756,
+    "name": "Азаров Виталий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6515,
+    "name": "Кауров Иван",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12697,
+    "name": "Овсянников Роман",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16980,
+    "name": "Демидов Данила",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 17332,
+    "name": "Зайцев Глеб",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17333,
+    "name": "Сапегин Родион",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 17371,
+    "name": "Зайко Андрей",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16891,
+    "name": "Мишин Алексей",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17351,
+    "name": "Моисеев Александр",
+    "position": "",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 15568,
+    "name": "Романов Александр",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12624,
+    "name": "Ахметов Станислав",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 15680,
+    "name": "Курмычкин Рамиль",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 12146,
+    "name": "Нуруллаев Эльшад",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 17064,
+    "name": "Вчерашний Тигран",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 14489,
+    "name": "Фомин Виталий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16411,
+    "name": "Глухов Максим",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   }
+  ]
+ }
+}
