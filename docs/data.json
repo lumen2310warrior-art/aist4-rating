@@ -1,7 +1,7 @@
 {
  "team": "Аист-4",
  "title": "Рейтинг игроков Аист-4",
- "updated": "03.10.2026 16:28",
+ "updated": "03.10.2026 21:13",
  "weights": {
   "game": 1.0,
   "goal": 1.2,
@@ -19,17 +19,17 @@
      "player_id": 16864,
      "name": "Селезнев Егор",
      "position": "Нападающий",
-     "games": 17,
-     "goals": 31,
-     "assists": 11,
+     "games": 18,
+     "goals": 32,
+     "assists": 14,
      "mvp": 5,
      "yellow": 0,
      "red": 0,
      "op": 0,
      "gk_games": 0,
      "gk_bonus": 0.0,
-     "total": 72.7,
-     "per_match": 4.28
+     "total": 77.9,
+     "per_match": 4.33
     },
     {
      "player_id": 16980,
@@ -48,6 +48,38 @@
      "per_match": 4.36
     },
     {
+     "player_id": 8756,
+     "name": "Азаров Виталий",
+     "position": "Защитник",
+     "games": 17,
+     "goals": 6,
+     "assists": 1,
+     "mvp": 1,
+     "yellow": 0,
+     "red": 0,
+     "op": 0,
+     "gk_games": 0,
+     "gk_bonus": 0.0,
+     "total": 26.7,
+     "per_match": 1.57
+    },
+    {
+     "player_id": 5157,
+     "name": "Прохоров Дмитрий",
+     "position": "Нападающий",
+     "games": 5,
+     "goals": 10,
+     "assists": 7,
+     "mvp": 1,
+     "yellow": 0,
+     "red": 0,
+     "op": 0,
+     "gk_games": 0,
+     "gk_bonus": 0.0,
+     "total": 25.5,
+     "per_match": 5.1
+    },
+    {
      "player_id": 12697,
      "name": "Овсянников Роман",
      "position": "Нападающий",
@@ -64,52 +96,20 @@
      "per_match": 1.64
     },
     {
-     "player_id": 8756,
-     "name": "Азаров Виталий",
-     "position": "Защитник",
-     "games": 16,
-     "goals": 5,
-     "assists": 1,
-     "mvp": 1,
-     "yellow": 0,
-     "red": 0,
-     "op": 0,
-     "gk_games": 0,
-     "gk_bonus": 0.0,
-     "total": 24.5,
-     "per_match": 1.53
-    },
-    {
      "player_id": 12696,
      "name": "Воинцев Алексей",
      "position": "Вратарь",
-     "games": 11,
+     "games": 12,
      "goals": 0,
      "assists": 5,
      "mvp": 4,
      "yellow": 1,
      "red": 0,
      "op": 0,
-     "gk_games": 11,
-     "gk_bonus": 1.61,
-     "total": 23.11,
-     "per_match": 2.1
-    },
-    {
-     "player_id": 5157,
-     "name": "Прохоров Дмитрий",
-     "position": "Нападающий",
-     "games": 4,
-     "goals": 8,
-     "assists": 6,
-     "mvp": 1,
-     "yellow": 0,
-     "red": 0,
-     "op": 0,
-     "gk_games": 0,
-     "gk_bonus": 0.0,
-     "total": 21.1,
-     "per_match": 5.28
+     "gk_games": 12,
+     "gk_bonus": 1.96,
+     "total": 24.46,
+     "per_match": 2.04
     },
     {
      "player_id": 16489,
@@ -163,8 +163,8 @@
      "player_id": 17332,
      "name": "Зайцев Глеб",
      "position": "Нападающий",
-     "games": 4,
-     "goals": 5,
+     "games": 5,
+     "goals": 8,
      "assists": 2,
      "mvp": 0,
      "yellow": 0,
@@ -172,15 +172,15 @@
      "op": 0,
      "gk_games": 0,
      "gk_bonus": 0.0,
-     "total": 12.0,
-     "per_match": 3.0
+     "total": 16.6,
+     "per_match": 3.32
     },
     {
      "player_id": 17333,
      "name": "Сапегин Родион",
      "position": "Защитник",
-     "games": 5,
-     "goals": 2,
+     "games": 6,
+     "goals": 3,
      "assists": 3,
      "mvp": 0,
      "yellow": 0,
@@ -188,8 +188,24 @@
      "op": 0,
      "gk_games": 0,
      "gk_bonus": 0.0,
-     "total": 10.4,
-     "per_match": 2.08
+     "total": 12.6,
+     "per_match": 2.1
+    },
+    {
+     "player_id": 16426,
+     "name": "Акимов Артем",
+     "position": "",
+     "games": 4,
+     "goals": 3,
+     "assists": 5,
+     "mvp": 0,
+     "yellow": 2,
+     "red": 2,
+     "op": 0,
+     "gk_games": 0,
+     "gk_bonus": 0.0,
+     "total": 9.6,
+     "per_match": 2.4
     },
     {
      "player_id": 16415,
@@ -256,22 +272,6 @@
      "per_match": 2.2
     },
     {
-     "player_id": 16426,
-     "name": "Акимов Артем",
-     "position": "",
-     "games": 3,
-     "goals": 2,
-     "assists": 2,
-     "mvp": 0,
-     "yellow": 2,
-     "red": 2,
-     "op": 0,
-     "gk_games": 0,
-     "gk_bonus": 0.0,
-     "total": 4.4,
-     "per_match": 1.47
-    },
-    {
      "player_id": 11700,
      "name": "Казаков Кирилл",
      "position": "Вратарь",
@@ -299,9 +299,9 @@
      "red": 0,
      "op": 0,
      "gk_games": 2,
-     "gk_bonus": 0.0,
-     "total": 3.5,
-     "per_match": 1.75
+     "gk_bonus": 0.08,
+     "total": 3.58,
+     "per_match": 1.79
     },
     {
      "player_id": 9863,
@@ -360,7 +360,7 @@
      "home": true,
      "scored": 2,
      "conceded": 14,
-     "expected": 7.89,
+     "expected": 7.95,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
@@ -448,7 +448,7 @@
      "home": true,
      "scored": 1,
      "conceded": 15,
-     "expected": 9.67,
+     "expected": 9.45,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -518,7 +518,7 @@
      "home": false,
      "scored": 2,
      "conceded": 18,
-     "expected": 9.37,
+     "expected": 9.15,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -676,7 +676,7 @@
      "home": false,
      "scored": 4,
      "conceded": 9,
-     "expected": 5.9,
+     "expected": 5.82,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -861,7 +861,7 @@
      "home": true,
      "scored": 8,
      "conceded": 9,
-     "expected": 7.0,
+     "expected": 7.56,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
@@ -1037,7 +1037,7 @@
      "home": true,
      "scored": 6,
      "conceded": 4,
-     "expected": 6.71,
+     "expected": 7.28,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
@@ -1107,7 +1107,7 @@
      "home": false,
      "scored": 3,
      "conceded": 9,
-     "expected": 10.05,
+     "expected": 10.25,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -1195,7 +1195,7 @@
      "home": true,
      "scored": 8,
      "conceded": 7,
-     "expected": 5.65,
+     "expected": 6.24,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -1292,7 +1292,7 @@
      "home": false,
      "scored": 12,
      "conceded": 3,
-     "expected": 3.79,
+     "expected": 3.8,
      "expected_basis": "соперник",
      "mvp_names": [
       "Прохоров Дмитрий"
@@ -1380,7 +1380,7 @@
      "home": true,
      "scored": 7,
      "conceded": 13,
-     "expected": 10.06,
+     "expected": 11.21,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -1468,7 +1468,7 @@
      "home": false,
      "scored": 5,
      "conceded": 7,
-     "expected": 6.71,
+     "expected": 7.28,
      "expected_basis": "соперник",
      "mvp_names": [
       "Николаев Михаил"
@@ -1565,7 +1565,7 @@
      "home": true,
      "scored": 2,
      "conceded": 6,
-     "expected": 5.94,
+     "expected": 6.42,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -1662,7 +1662,7 @@
      "home": false,
      "scored": 5,
      "conceded": 11,
-     "expected": 8.55,
+     "expected": 8.48,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -1759,7 +1759,7 @@
      "home": true,
      "scored": 7,
      "conceded": 8,
-     "expected": 4.89,
+     "expected": 4.9,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -1856,7 +1856,7 @@
      "home": false,
      "scored": 6,
      "conceded": 10,
-     "expected": 3.89,
+     "expected": 4.1,
      "expected_basis": "соперник",
      "mvp_names": [],
      "group": "championship",
@@ -1951,7 +1951,7 @@
      "home": true,
      "scored": 4,
      "conceded": 5,
-     "expected": 6.6,
+     "expected": 6.57,
      "expected_basis": "соперник",
      "mvp_names": [],
      "group": "championship",
@@ -2032,6 +2032,83 @@
        "id": 17333,
        "g": 0,
        "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      }
+     ]
+    },
+    {
+     "match_id": 39169,
+     "date": "03 октября 17:50",
+     "opponent": "Факел",
+     "home": false,
+     "scored": 9,
+     "conceded": 13,
+     "expected": 8.86,
+     "expected_basis": "соперник",
+     "mvp_names": [],
+     "group": "championship",
+     "lineup": [
+      {
+       "id": 12696,
+       "g": 0,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 1,
+       "mvp": 0
+      },
+      {
+       "id": 17332,
+       "g": 3,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 16864,
+       "g": 1,
+       "a": 3,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 17333,
+       "g": 1,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 8756,
+       "g": 1,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 5157,
+       "g": 2,
+       "a": 1,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 16426,
+       "g": 1,
+       "a": 3,
        "y": 0,
        "r": 0,
        "gk": 0,
@@ -2120,9 +2197,9 @@
      "red": 0,
      "op": 0,
      "gk_games": 2,
-     "gk_bonus": 0.88,
-     "total": 4.38,
-     "per_match": 2.19
+     "gk_bonus": 1.03,
+     "total": 4.53,
+     "per_match": 2.27
     },
     {
      "player_id": 16910,
@@ -2277,7 +2354,7 @@
      "home": true,
      "scored": 8,
      "conceded": 3,
-     "expected": 5.94,
+     "expected": 6.42,
      "expected_basis": "соперник",
      "mvp_names": [
       "Овсянников Роман"
@@ -2374,7 +2451,7 @@
      "home": true,
      "scored": 2,
      "conceded": 10,
-     "expected": 5.4,
+     "expected": 5.29,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -2453,7 +2530,7 @@
      "home": false,
      "scored": 7,
      "conceded": 10,
-     "expected": 6.55,
+     "expected": 6.48,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
@@ -2540,6 +2617,22 @@
    "title": "Все турниры",
    "players": [
     {
+     "player_id": 16864,
+     "name": "Селезнев Егор",
+     "position": "Нападающий",
+     "games": 19,
+     "goals": 34,
+     "assists": 14,
+     "mvp": 5,
+     "yellow": 1,
+     "red": 0,
+     "op": 0,
+     "gk_games": 0,
+     "gk_bonus": 0.0,
+     "total": 80.8,
+     "per_match": 4.25
+    },
+    {
      "player_id": 16980,
      "name": "Демидов Данила",
      "position": "Нападающий",
@@ -2554,22 +2647,6 @@
      "gk_bonus": 0.0,
      "total": 76.0,
      "per_match": 4.47
-    },
-    {
-     "player_id": 16864,
-     "name": "Селезнев Егор",
-     "position": "Нападающий",
-     "games": 18,
-     "goals": 33,
-     "assists": 11,
-     "mvp": 5,
-     "yellow": 1,
-     "red": 0,
-     "op": 0,
-     "gk_games": 0,
-     "gk_bonus": 0.0,
-     "total": 75.6,
-     "per_match": 4.2
     },
     {
      "player_id": 12697,
@@ -2591,8 +2668,8 @@
      "player_id": 8756,
      "name": "Азаров Виталий",
      "position": "Защитник",
-     "games": 18,
-     "goals": 7,
+     "games": 19,
+     "goals": 8,
      "assists": 2,
      "mvp": 1,
      "yellow": 0,
@@ -2600,24 +2677,24 @@
      "op": 0,
      "gk_games": 0,
      "gk_bonus": 0.0,
-     "total": 29.9,
-     "per_match": 1.66
+     "total": 32.1,
+     "per_match": 1.69
     },
     {
      "player_id": 12696,
      "name": "Воинцев Алексей",
      "position": "Вратарь",
-     "games": 13,
+     "games": 14,
      "goals": 0,
      "assists": 5,
      "mvp": 5,
      "yellow": 1,
      "red": 0,
      "op": 0,
-     "gk_games": 13,
-     "gk_bonus": 2.49,
-     "total": 27.49,
-     "per_match": 2.11
+     "gk_games": 14,
+     "gk_bonus": 2.98,
+     "total": 28.98,
+     "per_match": 2.07
     },
     {
      "player_id": 6515,
@@ -2639,17 +2716,17 @@
      "player_id": 5157,
      "name": "Прохоров Дмитрий",
      "position": "Нападающий",
-     "games": 4,
-     "goals": 8,
-     "assists": 6,
+     "games": 5,
+     "goals": 10,
+     "assists": 7,
      "mvp": 1,
      "yellow": 0,
      "red": 0,
      "op": 0,
      "gk_games": 0,
      "gk_bonus": 0.0,
-     "total": 21.1,
-     "per_match": 5.28
+     "total": 25.5,
+     "per_match": 5.1
     },
     {
      "player_id": 16489,
@@ -2687,8 +2764,8 @@
      "player_id": 17332,
      "name": "Зайцев Глеб",
      "position": "Нападающий",
-     "games": 4,
-     "goals": 5,
+     "games": 5,
+     "goals": 8,
      "assists": 2,
      "mvp": 0,
      "yellow": 0,
@@ -2696,8 +2773,24 @@
      "op": 0,
      "gk_games": 0,
      "gk_bonus": 0.0,
-     "total": 12.0,
-     "per_match": 3.0
+     "total": 16.6,
+     "per_match": 3.32
+    },
+    {
+     "player_id": 17333,
+     "name": "Сапегин Родион",
+     "position": "Защитник",
+     "games": 6,
+     "goals": 3,
+     "assists": 3,
+     "mvp": 0,
+     "yellow": 0,
+     "red": 0,
+     "op": 0,
+     "gk_games": 0,
+     "gk_bonus": 0.0,
+     "total": 12.6,
+     "per_match": 2.1
     },
     {
      "player_id": 16415,
@@ -2716,22 +2809,6 @@
      "per_match": 1.09
     },
     {
-     "player_id": 17333,
-     "name": "Сапегин Родион",
-     "position": "Защитник",
-     "games": 5,
-     "goals": 2,
-     "assists": 3,
-     "mvp": 0,
-     "yellow": 0,
-     "red": 0,
-     "op": 0,
-     "gk_games": 0,
-     "gk_bonus": 0.0,
-     "total": 10.4,
-     "per_match": 2.08
-    },
-    {
      "player_id": 6092,
      "name": "Сергиенко Алексей",
      "position": "Нападающий",
@@ -2746,6 +2823,22 @@
      "gk_bonus": 0.0,
      "total": 10.4,
      "per_match": 2.08
+    },
+    {
+     "player_id": 16426,
+     "name": "Акимов Артем",
+     "position": "",
+     "games": 4,
+     "goals": 3,
+     "assists": 5,
+     "mvp": 0,
+     "yellow": 2,
+     "red": 2,
+     "op": 0,
+     "gk_games": 0,
+     "gk_bonus": 0.0,
+     "total": 9.6,
+     "per_match": 2.4
     },
     {
      "player_id": 2123,
@@ -2812,22 +2905,6 @@
      "per_match": 1.3
     },
     {
-     "player_id": 16426,
-     "name": "Акимов Артем",
-     "position": "",
-     "games": 3,
-     "goals": 2,
-     "assists": 2,
-     "mvp": 0,
-     "yellow": 2,
-     "red": 2,
-     "op": 0,
-     "gk_games": 0,
-     "gk_bonus": 0.0,
-     "total": 4.4,
-     "per_match": 1.47
-    },
-    {
      "player_id": 16910,
      "name": "Попов Виталий",
      "position": "Защитник",
@@ -2855,9 +2932,9 @@
      "red": 0,
      "op": 0,
      "gk_games": 2,
-     "gk_bonus": 0.0,
-     "total": 3.5,
-     "per_match": 1.75
+     "gk_bonus": 0.08,
+     "total": 3.58,
+     "per_match": 1.79
     },
     {
      "player_id": 9863,
@@ -2916,7 +2993,7 @@
      "home": true,
      "scored": 2,
      "conceded": 14,
-     "expected": 7.89,
+     "expected": 7.95,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
@@ -3004,7 +3081,7 @@
      "home": true,
      "scored": 1,
      "conceded": 15,
-     "expected": 9.67,
+     "expected": 9.45,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -3074,7 +3151,7 @@
      "home": false,
      "scored": 2,
      "conceded": 18,
-     "expected": 9.37,
+     "expected": 9.15,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -3232,7 +3309,7 @@
      "home": false,
      "scored": 4,
      "conceded": 9,
-     "expected": 5.9,
+     "expected": 5.82,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -3417,7 +3494,7 @@
      "home": true,
      "scored": 8,
      "conceded": 9,
-     "expected": 7.0,
+     "expected": 7.56,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
@@ -3593,7 +3670,7 @@
      "home": true,
      "scored": 6,
      "conceded": 4,
-     "expected": 6.71,
+     "expected": 7.28,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
@@ -3663,7 +3740,7 @@
      "home": false,
      "scored": 3,
      "conceded": 9,
-     "expected": 10.05,
+     "expected": 10.25,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -3751,7 +3828,7 @@
      "home": true,
      "scored": 8,
      "conceded": 7,
-     "expected": 5.65,
+     "expected": 6.24,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -3848,7 +3925,7 @@
      "home": false,
      "scored": 12,
      "conceded": 3,
-     "expected": 3.79,
+     "expected": 3.8,
      "expected_basis": "соперник",
      "mvp_names": [
       "Прохоров Дмитрий"
@@ -3936,7 +4013,7 @@
      "home": true,
      "scored": 7,
      "conceded": 13,
-     "expected": 10.06,
+     "expected": 11.21,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -4024,7 +4101,7 @@
      "home": false,
      "scored": 5,
      "conceded": 7,
-     "expected": 6.71,
+     "expected": 7.28,
      "expected_basis": "соперник",
      "mvp_names": [
       "Николаев Михаил"
@@ -4121,7 +4198,7 @@
      "home": true,
      "scored": 2,
      "conceded": 6,
-     "expected": 5.94,
+     "expected": 6.42,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -4218,7 +4295,7 @@
      "home": false,
      "scored": 5,
      "conceded": 11,
-     "expected": 8.55,
+     "expected": 8.48,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -4315,7 +4392,7 @@
      "home": true,
      "scored": 7,
      "conceded": 8,
-     "expected": 4.89,
+     "expected": 4.9,
      "expected_basis": "соперник",
      "mvp_names": [
       "Селезнев Егор"
@@ -4412,7 +4489,7 @@
      "home": false,
      "scored": 6,
      "conceded": 10,
-     "expected": 3.89,
+     "expected": 4.1,
      "expected_basis": "соперник",
      "mvp_names": [],
      "group": "championship",
@@ -4507,7 +4584,7 @@
      "home": true,
      "scored": 4,
      "conceded": 5,
-     "expected": 6.6,
+     "expected": 6.57,
      "expected_basis": "соперник",
      "mvp_names": [],
      "group": "championship",
@@ -4596,13 +4673,90 @@
      ]
     },
     {
+     "match_id": 39169,
+     "date": "03 октября 17:50",
+     "opponent": "Факел",
+     "home": false,
+     "scored": 9,
+     "conceded": 13,
+     "expected": 8.86,
+     "expected_basis": "соперник",
+     "mvp_names": [],
+     "group": "championship",
+     "lineup": [
+      {
+       "id": 12696,
+       "g": 0,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 1,
+       "mvp": 0
+      },
+      {
+       "id": 17332,
+       "g": 3,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 16864,
+       "g": 1,
+       "a": 3,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 17333,
+       "g": 1,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 8756,
+       "g": 1,
+       "a": 0,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 5157,
+       "g": 2,
+       "a": 1,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      },
+      {
+       "id": 16426,
+       "g": 1,
+       "a": 3,
+       "y": 0,
+       "r": 0,
+       "gk": 0,
+       "mvp": 0
+      }
+     ]
+    },
+    {
      "match_id": 38217,
      "date": "29.05 22:10",
      "opponent": "Не Интер",
      "home": true,
      "scored": 8,
      "conceded": 3,
-     "expected": 5.94,
+     "expected": 6.42,
      "expected_basis": "соперник",
      "mvp_names": [
       "Овсянников Роман"
@@ -4699,7 +4853,7 @@
      "home": true,
      "scored": 2,
      "conceded": 10,
-     "expected": 5.4,
+     "expected": 5.29,
      "expected_basis": "соперник",
      "mvp_names": [
       "Воинцев Алексей"
@@ -4778,7 +4932,7 @@
      "home": false,
      "scored": 7,
      "conceded": 10,
-     "expected": 6.55,
+     "expected": 6.48,
      "expected_basis": "соперник",
      "mvp_names": [
       "Демидов Данила"
