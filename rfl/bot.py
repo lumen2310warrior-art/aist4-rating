@@ -67,6 +67,11 @@ def parse_site_date(text, now):
     return best
 
 
+def played_at(m, now):
+    """Дата матча с годом: из рассчитанного поля played, иначе по тексту с сайта."""
+    return from_iso(m["played"]) if m.get("played") else parse_site_date(m["date"], now)
+
+
 def surname(name):
     return (name or "").split(" ")[0]
 
@@ -162,7 +167,7 @@ class Bot:
                 self.state["dm_last"][str(uid)] = m["id"]
                 q = next((q for q in self.state["questions"] if q["to"] == uid and q["status"] == "sent"), None)
                 # учитываются только сообщения, написанные после вопроса
-                if q and m["date"] >= ts(from_iso(q.get("sent") or q["asked"])):
+                if q and m.get("text", "").strip() and m["date"] >= ts(from_iso(q.get("sent") or q["asked"])):
                     self.handle_answer(q, m["text"].strip())
 
     def handle_answer(self, q, text):
@@ -255,42 +260,104 @@ class Bot:
         self.close_questions(key, "datetime")
         self.say(f"Матч с командой «{g['opponent']}» подтвержден")
 
-    def check_posters(self):
-        if not self.service.token:
-            return  # сервисный ключ не задан: расписание берется только с сайта лиги
-        try:
-            posts = self.service.call("wall.get", owner_id=-int(self.b["league_group_id"]), count=10)["items"]
-        except VKError as e:
-            self.token_problem(e)
+    # ---------- афиши ----------
+
+    @staticmethod
+    def photos_in(msg):
+        """Все фотографии сообщения: вложения, пересланные посты и пересланные сообщения."""
+        found = []
+
+        def walk(item):
+            for a in item.get("attachments", []) or []:
+                if a.get("type") == "photo":
+                    found.append(a["photo"])
+                elif a.get("type") == "wall":
+                    walk(a["wall"])
+                    for c in a["wall"].get("copy_history", []) or []:
+                        walk(c)
+            for f in item.get("fwd_messages", []) or []:
+                walk(f)
+            if item.get("reply_message"):
+                walk(item["reply_message"])
+        walk(msg)
+        return found
+
+    def read_image(self, photo, where, reply_to=None):
+        """Распознает одну картинку; если это афиша с матчем команды, заводит матч на подтверждение."""
+        pid = f"{photo.get('owner_id')}_{photo.get('id')}"
+        if pid in self.state.setdefault("seen_photos", []):
             return
-        new = [p for p in posts if p["id"] not in self.state["seen_posts"]
-               and self.now.timestamp() - p["date"] < 14 * 86400]
-        if not new:
+        self.state["seen_photos"] = (self.state["seen_photos"] + [pid])[-300:]
+        sizes = photo.get("sizes") or []
+        if not sizes:
             return
+        url = max(sizes, key=lambda s: s.get("width", 0) * s.get("height", 0))["url"]
         from .poster import find_team_matches, read_poster  # тяжелые библиотеки только при необходимости
-        for p in new:
-            photos = [a["photo"] for a in p.get("attachments", []) if a["type"] == "photo"]
-            for ph in photos:
-                url = max(ph["sizes"], key=lambda s: s["width"] * s["height"])["url"]
-                try:
-                    poster = read_poster(requests.get(url, timeout=60).content)
-                except Exception as e:
-                    self.say(f"Афиша в посте {p['id']} не распознана: {e}")
+        try:
+            poster = read_poster(requests.get(url, timeout=60).content)
+        except Exception as e:
+            self.say(f"Картинка ({where}) не распознана: {e}")
+            return
+        if not poster["rows"]:
+            return  # это не афиша
+        found = 0
+        for r in find_team_matches(poster, self.b["poster_aliases"]):
+            if not r["date"] or not r["time"]:
+                self.say(f"Афиша ({where}): найден матч с «{r['opponent']}», но без даты или времени")
+                continue
+            hh, mm = map(int, r["time"].split(":"))
+            start = dt.datetime(r["date"].year, r["date"].month, r["date"].day, hh, mm, tzinfo=TZ)
+            if start < self.now:
+                continue
+            found += 1
+            opp = self.known_name(r["opponent"])
+            _, _, created = self.add_game(opp, start, r["venue"], "афиша лиги")
+            if created:
+                self.say(f"С афиши ({where}): {opp}, {human(start)}")
+        if reply_to:
+            team = self.cfg["team"]["name"]
+            self.group.send(reply_to, f"Афиша получена, матчей команды {team} найдено: {found}." +
+                            ("" if found else " Если матч на ней есть, капитан может прислать дату и время вручную."))
+
+    def scan_messages(self, peer, where, reply=False):
+        """Новые сообщения в беседе или в личных сообщениях сообщества: ищем в них афиши."""
+        try:
+            hist = self.group.call("messages.getHistory", peer_id=peer, count=30)
+        except VKError as e:
+            if peer == self.b["chat_peer_group"] and not self.state["alerts"].get("chat_read"):
+                self.state["alerts"]["chat_read"] = True
+                self.say(f"Бот не может читать беседу команды ({e}). Нужны права администратора в беседе.")
+            return
+        key = str(peer)
+        last = self.state.setdefault("scan_last", {}).get(key)
+        items = sorted(hist.get("items", []), key=lambda m: m["id"])
+        if last is None:  # первый запуск: старую историю не разбираем, только запоминаем место
+            last = max([m["id"] for m in items if self.now.timestamp() - m["date"] > 3 * 86400], default=0)
+        for m in items:
+            if m["id"] <= last or m.get("from_id", 0) < 0:
+                continue
+            for ph in self.photos_in(m):
+                self.read_image(ph, where, reply_to=m["from_id"] if reply else None)
+            last = max(last, m["id"])
+        self.state["scan_last"][key] = last
+
+    def check_posters(self):
+        """Источники афиш: беседа команды и личные сообщения сообществу от капитана и помощников."""
+        self.scan_messages(self.b["chat_peer_group"], "беседа команды")
+        for uid in [self.captain] + self.assistants:
+            self.scan_messages(uid, "личные сообщения", reply=True)
+        if self.service.token:  # если когда-нибудь появится сервисный ключ, читаем и стену лиги
+            try:
+                posts = self.service.call("wall.get", owner_id=-int(self.b["league_group_id"]), count=10)["items"]
+            except VKError as e:
+                self.token_problem(e)
+                return
+            for p in posts:
+                if p["id"] in self.state["seen_posts"] or self.now.timestamp() - p["date"] > 14 * 86400:
                     continue
-                for r in find_team_matches(poster, self.b["poster_aliases"]):
-                    if not r["date"] or not r["time"]:
-                        self.say(f"В посте {p['id']} найден матч с {r['opponent']}, но без даты или времени")
-                        continue
-                    hh, mm = map(int, r["time"].split(":"))
-                    start = dt.datetime(r["date"].year, r["date"].month, r["date"].day, hh, mm, tzinfo=TZ)
-                    if start < self.now:
-                        continue
-                    opp = self.known_name(r["opponent"])
-                    _, _, created = self.add_game(opp, start, r["venue"], "афиша лиги")
-                    if created:
-                        self.say(f"С афиши: {opp}, {human(start)}")
-            self.state["seen_posts"].append(p["id"])
-        self.state["seen_posts"] = self.state["seen_posts"][-100:]
+                for ph in self.photos_in(p):
+                    self.read_image(ph, "стена лиги")
+                self.state["seen_posts"] = (self.state["seen_posts"] + [p["id"]])[-100:]
 
     def known_name(self, ocr_name):
         """Название соперника с афиши (заглавными) -> как на сайте лиги, если удается сопоставить."""
@@ -375,7 +442,7 @@ class Bot:
                                 "либо просто учтите это.")
 
     def new_protocol(self, m):
-        played = parse_site_date(m["date"], self.now)
+        played = played_at(m, self.now)
         if played and self.now - played > dt.timedelta(days=3):
             return  # старый матч (например, при первом запуске): без сводки и опроса
         start = played or self.now
@@ -491,7 +558,7 @@ class Bot:
         tag = f"{month:%Y-%m}"
         if self.now.day != 1 or self.now.hour < 12 or self.state["monthly_sent"] == tag:
             return
-        ms = [m for m in matches if (d := parse_site_date(m["date"], self.now))
+        ms = [m for m in matches if (d := played_at(m, self.now))
               and d.year == month.year and d.month == month.month]
         self.state["monthly_sent"] = tag
         if not ms:

@@ -49,6 +49,7 @@ body{margin:0;background:var(--wall);color:var(--ink);font:16px/1.5 var(--text);
 .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
 .seg button:focus-visible,.sort:focus-visible{outline:3px solid var(--line);outline-offset:2px}
 .sortbox{font-size:15px;color:var(--muted)}
+.seg button .n{font-size:12px;opacity:.7;margin-left:4px}
 .sort{font:500 15px var(--text);background:none;border:0;border-bottom:2px solid transparent;
   color:var(--muted);padding:4px 2px;margin-left:10px;cursor:pointer}
 .sort[aria-pressed="true"]{color:var(--ink);border-color:var(--line)}
@@ -163,6 +164,7 @@ h2{font:500 22px/1.2 var(--display);margin:48px 0 14px}
 </header>
 <main class="wrap">
   <div class="controls">
+    <div class="seg" id="seasons" role="group" aria-label="Сезон"></div>
     <div class="seg" id="groups" role="group" aria-label="Турнир"></div>
     <div class="sortbox">Сортировать:
       <button class="sort" data-sort="total" aria-pressed="true">по общему баллу</button>
@@ -179,23 +181,39 @@ h2{font:500 22px/1.2 var(--display);margin:48px 0 14px}
 <script>
 const D = JSON.parse(document.getElementById('data').textContent);
 const order = ['championship','cup','all'];
-let group = order.find(k => D.groups[k] && D.groups[k].matches.length) || 'all';
+let season = D.default_season || 'all';
+try { const s = localStorage.getItem('aist4-season'); if (s && (s === 'all' || (D.seasons||[]).some(x => x.key === s))) season = s; } catch(e) {}
+const view = () => D.views[season] || D.views.all;
+const seasonTitle = () => season === 'all' ? 'все сезоны' : ((D.seasons||[]).find(x => x.key === season) || {title: season}).title;
+let group = order.find(k => view()[k] && view()[k].matches.length) || 'all';
 let sortKey = 'total';
 const fmt = n => (Math.round(n*100)/100).toLocaleString('ru-RU');
 const z = n => n ? n : '<span class="zero">0</span>';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+function renderSeasons(){
+  const box = document.getElementById('seasons');
+  const items = [{key:'all', title:'Все сезоны', matches: D.views.all.all.matches.length}].concat(D.seasons || []);
+  box.innerHTML = items.map(s =>
+    `<button data-s="${esc(s.key)}" aria-pressed="${s.key===season}">${esc(s.title)}<span class="n">${s.matches}</span></button>`).join('');
+  box.querySelectorAll('button').forEach(b => b.onclick = () => {
+    season = b.dataset.s;
+    try { localStorage.setItem('aist4-season', season); } catch(e) {}
+    if (!view()[group] || !view()[group].matches.length) group = 'all';
+    draw();
+  });
+}
 function renderGroups(){
   const box = document.getElementById('groups');
-  box.innerHTML = order.filter(k => D.groups[k]).map(k =>
-    `<button data-g="${k}" aria-pressed="${k===group}">${esc(D.groups[k].title)}</button>`).join('');
+  box.innerHTML = order.filter(k => view()[k]).map(k =>
+    `<button data-g="${k}" aria-pressed="${k===group}">${esc(view()[k].title)}</button>`).join('');
   box.querySelectorAll('button').forEach(b => b.onclick = () => { group = b.dataset.g; draw(); });
 }
 function renderBoard(){
-  const g = D.groups[group];
+  const g = view()[group];
   const rows = [...g.players].sort((a,b) => b[sortKey]-a[sortKey] || b.total-a.total);
   const el = document.getElementById('board');
-  if (!rows.length){ el.innerHTML = '<div class="empty">В этом турнире пока нет сыгранных матчей. Рейтинг появится после первого протокола на сайте лиги.</div>'; return; }
+  if (!rows.length){ el.innerHTML = '<div class="empty">В выбранном сезоне и турнире пока нет сыгранных матчей. Рейтинг появится после первого протокола на сайте лиги.</div>'; return; }
   el.innerHTML = `<table><thead><tr>
     <th>Место</th><th class="l">Игрок</th><th>Балл</th><th>За матч</th><th title="Игры">И</th><th title="Голы">Г</th>
     <th title="Голевые передачи">П</th><th title="Лучший игрок матча">ЛИ</th>
@@ -213,14 +231,14 @@ function renderBoard(){
   el.querySelectorAll('.pl').forEach(b => b.onclick = () => openCard(+b.dataset.id));
 }
 function renderMatches(){
-  const ms = D.groups[group].matches;
+  const ms = view()[group].matches;
   const el = document.getElementById('matches');
   if (!ms.length){ el.innerHTML = '<li><span class="d"></span><span>Сыгранных матчей пока нет</span></li>'; return; }
   el.innerHTML = [...ms].reverse().map(m => {
     const line = m.home ? `${esc(D.team)} <span class="sc">${m.scored}:${m.conceded}</span> ${esc(m.opponent)}`
                         : `${esc(m.opponent)} <span class="sc">${m.conceded}:${m.scored}</span> ${esc(D.team)}`;
     const mvp = m.mvp_names.length ? 'Лучший игрок: ' + m.mvp_names.map(esc).join(', ') : 'Лучший игрок не указан';
-    return `<li><span class="d">${esc(m.date||'')}</span>
+    return `<li><span class="d">${esc(mdate(m, true))}</span>
       <a href="https://rfll.ru/match/${m.match_id}">${line}</a>
       <span class="mvp">${mvp}. Ожидалось пропущенных: ${fmt(m.expected)} (${m.expected_basis==='соперник'?'по сопернику':'по лиге'})</span></li>`;
   }).join('');
@@ -229,11 +247,12 @@ function renderHow(){
   const w = D.weights;
   document.getElementById('how').innerHTML = `<h2>Как считаются баллы</h2>
   <p>Игра ${fmt(w.game)}, гол ${fmt(w.goal)}, голевая передача ${fmt(w.assist)}, лучший игрок матча ${fmt(w.mvp)}, желтая карточка ${fmt(w.yellow)}, красная ${fmt(w.red)}.</p>
-  <p>Вратарь дополнительно получает (ожидаемые голы соперника минус пропущенные) × ${fmt(D.gk_factor)}, но не меньше нуля. Ожидаемые голы равны средней результативности соперника в турнире; если соперник сыграл меньше трех матчей, берется среднее по лиге.</p>
+  <p>Вратарь дополнительно получает (ожидаемые голы соперника минус пропущенные) × ${fmt(D.gk_factor)}, но не меньше нуля. Ожидаемые голы равны средней результативности соперника в том же сезоне; если соперник сыграл меньше трех матчей, берется среднее по лиге этого сезона, а в начале сезона, пока данных мало, среднее по всем сезонам.</p>
+  <p>Сезоны считаются по дате матча. Режим «Все сезоны» суммирует матчи всех сезонов; баллы вратаря за каждый матч определяются по его сезону.</p>
   <p>Баллы за матч равны общему баллу, деленному на число игр, и не опускаются ниже нуля.</p>
   <p>Нажмите на фамилию игрока в таблице, чтобы открыть его подробную статистику.</p>`;
 }
-function draw(){ renderGroups(); renderBoard(); renderMatches(); }
+function draw(){ renderSeasons(); renderGroups(); renderBoard(); renderMatches(); }
 document.querySelectorAll('.sort').forEach(b => b.onclick = () => {
   sortKey = b.dataset.sort;
   document.querySelectorAll('.sort').forEach(x => x.setAttribute('aria-pressed', x===b));
@@ -246,7 +265,13 @@ function mkey(s){ s=(s||'').toLowerCase(); let m=s.match(/(\d{1,2})\s+([а-я]+)
   if(m && MON.includes(m[2])) return (MON.indexOf(m[2])+1)*100 + +m[1];
   m=s.match(/(\d{1,2})\.(\d{1,2})/); return m ? +m[2]*100 + +m[1] : 0; }
 function sdate(s){ const k=mkey(s); return k ? String(k%100).padStart(2,'0')+'.'+String(Math.floor(k/100)).padStart(2,'0') : ''; }
-const chrono = ms => [...ms].sort((a,b) => (mkey(a.date)-mkey(b.date)) || (a.match_id-b.match_id));
+const pk = m => m.played ? Date.parse(m.played) : 0;
+const chrono = ms => [...ms].sort((a,b) => (pk(a)-pk(b)) || (mkey(a.date)-mkey(b.date)) || (a.match_id-b.match_id));
+function mdate(m, full){
+  if(m.played){ const d = m.played.slice(0,10).split('-'), t = m.played.slice(11,16);
+    return `${d[2]}.${d[1]}.${full ? d[0] : d[0].slice(2)}` + (full && t && t !== '00:00' ? ' ' + t : ''); }
+  return full ? (m.date || '') : mdate(m);
+}
 function ptsOf(e,m){ const w=D.weights;
   let p = w.game + w.goal*e.g + w.assist*e.a + w.mvp*e.mvp + w.yellow*e.y + w.red*e.r;
   if(e.gk) p += Math.max(0,(m.expected-m.conceded)*D.gk_factor); return p; }
@@ -257,18 +282,18 @@ function plural(n, a, b, c){ const t=n%10, h=n%100; return (t===1&&h!==11)?a:(t>
 function scoreLine(m){ return `${m.scored}:${m.conceded}`; }  // всегда счет команды первым
 
 function findPlayer(id){
-  for(const k of order){ const p=(D.groups[k]||{players:[]}).players.find(x=>x.player_id===id); if(p) return p; }
+  for(const k of order){ const p=(view()[k]||{players:[]}).players.find(x=>x.player_id===id); if(p) return p; }
   return null;
 }
 function collect(id, grp){
-  const g = D.groups[grp], ms = chrono(g.matches), apps = [];
+  const g = view()[grp], ms = chrono(g.matches), apps = [];
   for(const m of ms){ const e = m.lineup && m.lineup.find(x=>x.id===id);
     if(e) apps.push({m, e, pts: ptsOf(e,m), res: resOf(m)}); }
   return {g, ms, apps};
 }
 function dynamics(id, grp, avail){
   /* ось X: все матчи команды по порядку; для каждого: баллы игрока, события, место в рейтинге после матча */
-  const g = D.groups[grp], ms = chrono(g.matches), totals = {}, played = {};
+  const g = view()[grp], ms = chrono(g.matches), totals = {}, played = {};
   const cols = ms.map(m => {
     for(const e of m.lineup){ totals[e.id] = (totals[e.id]||0) + ptsOf(e,m); played[e.id] = 1; }
     const e = m.lineup.find(x => x.id === id);
@@ -325,7 +350,7 @@ function dynamics(id, grp, avail){
   });
   // даты
   const step = cw < 22 ? 3 : cw < 30 ? 2 : 1;
-  cols.forEach((c,i) => { if(i % step === 0) svg += `<text class="ax" x="${cx(i)}" y="${xLab}" text-anchor="middle">${sdate(c.m.date)}</text>`; });
+  cols.forEach((c,i) => { if(i % step === 0) svg += `<text class="ax" x="${cx(i)}" y="${xLab}" text-anchor="middle">${mdate(c.m).slice(0,5)}</text>`; });
   // место в рейтинге (1 сверху)
   const maxR = Math.max(...cols.map(c => c.rank || 0), 2);
   const ry = r => rTop + (r-1)/(maxR-1)*rH;
@@ -358,7 +383,7 @@ function bindDynamics(cols){
   const show = el => {
     const c = cols[+el.dataset.i], m = c.m;
     wrap.querySelectorAll('.hit.on').forEach(x => x.classList.remove('on')); el.classList.add('on');
-    tip.innerHTML = `<b>${sdate(m.date)}, ${esc(m.opponent)}</b><br>Счет ${m.scored}:${m.conceded}, ${RESW[c.res]}<br>` +
+    tip.innerHTML = `<b>${mdate(m)}, ${esc(m.opponent)}</b><br>Счет ${m.scored}:${m.conceded}, ${RESW[c.res]}<br>` +
       (c.e ? `Голы ${c.e.g}, передачи ${c.e.a}${c.e.mvp ? ', лучший игрок' : ''}${c.e.y ? ', ЖК' : ''}${c.e.r ? ', КК' : ''}${c.e.gk ? ', в воротах' : ''}<br>Баллы: <b>${fmt(c.pts)}</b>`
            : 'Не играл') + (c.rank ? `<br>Место после матча: ${c.rank}` : '');
     tip.hidden = false;
@@ -376,12 +401,12 @@ function openCard(id){
   const p = findPlayer(id); if(!p) return;
   const {g, ms, apps} = collect(id, group);
   const panel = document.getElementById('panel');
-  const posLine = [p.position, `турнир: ${g.title}`].filter(Boolean).join(' · ');
+  const posLine = [p.position, `турнир: ${g.title}`, `период: ${seasonTitle()}`].filter(Boolean).join(' · ');
   let html = `<div class="ph"><button class="x" id="xclose" aria-label="Закрыть">×</button>
     <h3 id="pname">${esc(p.name)}</h3><div class="sub">${esc(posLine)} · <a href="https://rfll.ru/player/${id}" target="_blank" rel="noopener">профиль на сайте лиги</a></div></div><div class="pb">`;
   if(!apps.length){
-    html += `<p class="note">В турнире «${esc(g.title)}» этот игрок пока не играл.</p>
-      <button class="linkbtn" id="toall">Показать статистику по всем турнирам</button></div>`;
+    html += `<p class="note">В выбранном турнире и периоде (${esc(seasonTitle())}) этот игрок пока не играл.</p>
+      <button class="linkbtn" id="toall">Показать все турниры</button></div>`;
     panel.innerHTML = html; bindCard(id); return;
   }
   const row = g.players.find(x=>x.player_id===id) || {};
@@ -430,14 +455,14 @@ function openCard(id){
     <dt>Забито и пропущено за матч</dt><dd>${fmt(teamGoals/n)} : ${fmt(conc/n)}</dd></dl></div>`;
   if(gkApps.length*2 < n) html += gkHtml;
   html += `<div class="blk"><h4>Лучший матч</h4><dl class="kv">
-    <dt>${sdate(best.m.date)}, соперник ${esc(best.m.opponent)}, счет ${scoreLine(best.m)}</dt><dd>${fmt(best.pts)}</dd>
+    <dt>${mdate(best.m)}, соперник ${esc(best.m.opponent)}, счет ${scoreLine(best.m)}</dt><dd>${fmt(best.pts)}</dd>
     <dt>Голы и передачи</dt><dd>${best.e.g} и ${best.e.a}</dd></dl></div>`;
   const avail = Math.min(window.innerWidth, 640) - (window.innerWidth <= 560 ? 28 : 40) - 34;
   const dyn = dynamics(id, group, avail);
   html += `<div class="blk chart"><h4>Динамика от матча к матчу</h4>${dyn.html}</div>`;
   html += `<div class="blk log"><h4>Все матчи</h4><table><thead><tr><th class="l">Дата</th><th class="l">Соперник</th><th title="Счет: команда : соперник">Счет</th>
     <th>Г</th><th>П</th><th>ЖК</th><th>КК</th><th>ЛИ</th><th>Балл</th></tr></thead><tbody>` +
-    [...apps].reverse().map(a => `<tr><td class="l">${sdate(a.m.date)}</td><td class="l">${esc(a.m.opponent)}${a.e.gk?' (вр.)':''}</td>
+    [...apps].reverse().map(a => `<tr><td class="l">${mdate(a.m)}</td><td class="l">${esc(a.m.opponent)}${a.e.gk?' (вр.)':''}</td>
       <td><span class="res ${a.res}" title="${RES[a.res]}">${scoreLine(a.m)}</span></td>
       <td>${z(a.e.g)}</td><td>${z(a.e.a)}</td><td>${z(a.e.y)}</td><td>${z(a.e.r)}</td>
       <td>${a.e.mvp?'<span class="star">★</span>':''}</td><td><b>${fmt(a.pts)}</b></td></tr>`).join('') +

@@ -16,6 +16,7 @@ import yaml
 
 from rfl.parser import norm_team, parse_match, parse_team_calendar
 from rfl.scoring import division_stats, expected_goals, score_players
+from rfl.seasons import load_match_dates, resolve_date, season_of, seasons_from_cfg
 from rfl.site import render
 from rfl.timeutil import now_local
 
@@ -109,6 +110,9 @@ def collect(cfg, get_html, use_cache, warnings):
     team = cfg["team"]
     team_key = norm_team(team["name"])
     mvp_all = load_mvp(ROOT / "data" / "mvp.csv")
+    seasons = seasons_from_cfg(cfg)
+    manual_dates = load_match_dates(ROOT / "data" / "match_dates.csv")
+    now = now_local()
 
     # 1. Свои матчи: страница команды (адрес без параметров, разрешен правилами сайта).
     #    Список копится в data/our_matches.json, чтобы матчи не терялись при смене турнира на странице.
@@ -121,7 +125,8 @@ def collect(cfg, get_html, use_cache, warnings):
             warnings.append(f"Турнир «{tournament}» на странице команды не отнесен ни к Чемпионату, ни к Кубку")
         for m in cal:
             if m["home_goals"] is not None and group:
-                index[str(m["match_id"])] = {"group": group, "tournament": tournament, "date": m["date"]}
+                old = index.get(str(m["match_id"]), {})
+                index[str(m["match_id"])] = {**old, "group": group, "tournament": tournament, "date": m["date"]}
             elif m["home_goals"] is None:
                 opp = m["away"] if norm_team(m["home"]) == team_key else m["home"]
                 upcoming.append({"match_id": m["match_id"], "opponent": opp, "date": m["date"],
@@ -130,11 +135,8 @@ def collect(cfg, get_html, use_cache, warnings):
         warnings.append(f"Страница команды не загружена ({exc})")
     for mid in load_manual_cup(ROOT / "data" / "cup_matches.csv"):
         index.setdefault(str(mid), {"group": "cup", "tournament": "Кубок", "date": ""})
-    if use_cache:
-        (ROOT / "data" / "our_matches.json").write_text(
-            json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    # 2. Протоколы своих матчей.
+    # 2. Протоколы своих матчей и даты с годом.
     games = []
     fresh = set()
     for mid, meta in sorted(index.items(), key=lambda x: int(x[0])):
@@ -145,11 +147,27 @@ def collect(cfg, get_html, use_cache, warnings):
             continue
         if proto["home_goals"] is None:
             continue
+        if int(mid) in manual_dates:
+            meta["played"] = manual_dates[int(mid)].isoformat()
+        elif not meta.get("played"):
+            d = resolve_date(meta.get("date") or proto.get("date", ""), now)
+            if d:
+                meta["played"] = d.isoformat()
+        if not meta.get("played"):
+            warnings.append(f"Матч {mid}: дата не определена, он учтен только в «Все сезоны». "
+                            "Впишите дату в data/match_dates.csv")
+        elif season_of(meta["played"], seasons) is None:
+            warnings.append(f"Матч {mid}: дата {meta['played'][:10]} вне заданных сезонов, он учтен только в «Все сезоны»")
         home_side = proto.get("home_id") == team["rfll_id"] or norm_team(proto["home"]) == team_key
         games.append((meta, proto, home_side))
+    if use_cache:
+        (ROOT / "data" / "our_matches.json").write_text(
+            json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    # 3. Календари соперников: их результативность и общее среднее по лиге.
-    #    Загружаются заново только при появлении нового матча или раз в неделю.
+    # 3. Календари соперников: их результативность и среднее по лиге, отдельно для каждого сезона.
+    #    Пул матчей накапливается в data/opponents.json вместе с датами, поэтому при смене турнира
+    #    на страницах соперников прошлые матчи не теряются. Календари загружаются заново
+    #    при появлении нового матча или раз в неделю.
     opp_path = ROOT / "data" / "opponents.json"
     cached = json.loads(opp_path.read_text(encoding="utf-8")) if use_cache and opp_path.exists() else {}
     needed = set()
@@ -159,35 +177,56 @@ def collect(cfg, get_html, use_cache, warnings):
             needed.add(opp_id)
     age_ok = False
     if cached.get("fetched"):
-        age_ok = (now_local() - dt.datetime.fromisoformat(cached["fetched"])).days < 7
+        age_ok = (now - dt.datetime.fromisoformat(cached["fetched"])).days < 7
     have = set(cached.get("teams", []))
-    if cached and age_ok and not fresh and needed <= have:
-        pool = {int(k): v for k, v in cached["pool"].items()}
-    else:
-        pool = {}
+    pool = {int(k): v for k, v in cached.get("pool", {}).items()}
+    refetch = not (cached and age_ok and not fresh and needed <= have)
+    if refetch:
         for opp_id in sorted(needed):
             try:
                 _, opp_cal = parse_team_calendar(get_html(f"{BASE}/team/{opp_id}/calendar"))
                 for m in opp_cal:
+                    prior = pool.get(m["match_id"], {})
+                    if prior.get("played"):
+                        m["played"] = prior["played"]
                     pool[m["match_id"]] = m
             except Exception as exc:
                 warnings.append(f"Календарь соперника {opp_id} не загружен ({exc})")
-        if use_cache:
-            opp_path.write_text(json.dumps({"fetched": now_local().isoformat(), "teams": sorted(needed),
-                                            "pool": pool}, ensure_ascii=False), encoding="utf-8")
-    stats = division_stats(list(pool.values()))
+    changed = False
+    for mid, m in pool.items():
+        if m["home_goals"] is None or m.get("played"):
+            continue
+        d = manual_dates.get(mid) or resolve_date(m.get("date"), now)
+        if d:
+            m["played"] = d.isoformat()
+            changed = True
+    if use_cache and (refetch or changed):
+        opp_path.write_text(json.dumps({
+            "fetched": now.isoformat() if refetch else cached.get("fetched", now.isoformat()),
+            "teams": sorted(needed | have) if refetch else cached.get("teams", sorted(needed)),
+            "pool": pool}, ensure_ascii=False), encoding="utf-8")
+    stats_all = division_stats(list(pool.values()))
+    stats_by = {}
+    min_sample = cfg["goalkeeper"].get("min_league_games", 10)
+    for s in seasons:
+        st = division_stats([m for m in pool.values() if season_of(m.get("played"), seasons) == s["key"]])
+        if sum(st["games"].values()) < min_sample and stats_all["league_avg"] is not None:
+            st["league_avg"] = stats_all["league_avg"]  # в начале сезона мало данных: среднее по всем сезонам
+        stats_by[s["key"]] = st
 
     # 4. Сборка матчей для расчета.
     groups = {k: {"title": cfg["group_titles"][k], "matches": []} for k in cfg["groups"]}
     for meta, proto, home_side in games:
         side, other = ("home", "away") if home_side else ("away", "home")
         opponent = proto[other]
-        expected, basis = expected_goals(opponent, stats, cfg["goalkeeper"])
+        season = season_of(meta.get("played"), seasons)
+        expected, basis = expected_goals(opponent, stats_by.get(season, stats_all), cfg["goalkeeper"])
         players = proto["lineups"][side]
         mid = proto["match_id"]
         mvp_ids = resolve_mvp(mvp_all.get(mid, []), players, mid, warnings)
         groups[meta["group"]]["matches"].append({
             "match_id": mid, "date": meta.get("date") or proto.get("date", ""), "opponent": opponent,
+            "played": meta.get("played") or "", "season": season,
             "home": home_side, "scored": proto[f"{side}_goals"], "conceded": proto[f"{other}_goals"],
             "expected": round(expected, 2), "expected_basis": basis,
             "players": players, "mvp_ids": mvp_ids,
@@ -197,23 +236,44 @@ def collect(cfg, get_html, use_cache, warnings):
     return groups, upcoming, fresh
 
 
-def build(cfg, groups):
+def build_groups(cfg, groups, season=None):
+    """Рейтинг по турнирам для выбранного сезона (season=None: все сезоны)."""
     out = {}
     all_matches = []
     for key, g in groups.items():
-        all_matches += g["matches"]
+        ms = [m for m in g["matches"] if season is None or m["season"] == season]
+        all_matches += ms
         out[key] = {"title": g["title"],
-                    "players": score_players(g["matches"], cfg["weights"], cfg["goalkeeper"]),
-                    "matches": [public_match(m) for m in g["matches"]]}
+                    "players": score_players(ms, cfg["weights"], cfg["goalkeeper"]),
+                    "matches": [public_match(m) for m in ms]}
     out["all"] = {"title": "Все турниры",
                   "players": score_players(all_matches, cfg["weights"], cfg["goalkeeper"]),
                   "matches": [public_match(m) for m in all_matches]}
     return out
 
 
+def build(cfg, groups):
+    """views[сезон][турнир]; сезон «all» объединяет все сезоны."""
+    seasons = seasons_from_cfg(cfg)
+    views = {"all": build_groups(cfg, groups)}
+    for s in seasons:
+        views[s["key"]] = build_groups(cfg, groups, s["key"])
+    today = now_local().date()
+    info = []
+    for s in seasons:
+        n = len(views[s["key"]]["all"]["matches"])
+        if n or s["start"] <= today:  # будущий сезон без матчей на странице не показывается
+            info.append({"key": s["key"], "title": s["title"], "matches": n,
+                         "start": s["start"].isoformat(), "end": s["end"].isoformat()})
+    current = next((s["key"] for s in seasons if s["start"] <= today <= s["end"]), None)
+    with_games = [s["key"] for s in info if s["matches"]]
+    default = current if current in with_games else (with_games[-1] if with_games else "all")
+    return views, info, default
+
+
 def public_match(m):
     """Матч для страницы: счет, соперник и состав с личной статистикой каждого игрока."""
-    out = {k: m[k] for k in ("match_id", "date", "opponent", "home", "scored", "conceded",
+    out = {k: m[k] for k in ("match_id", "date", "played", "season", "opponent", "home", "scored", "conceded",
                              "expected", "expected_basis", "mvp_names", "group")}
     out["lineup"] = [{"id": p["player_id"], "g": p["goals"], "a": p["assists"], "y": p["yellow"],
                       "r": p["red"], "gk": 1 if p["position"] == "Вратарь" else 0,
@@ -226,18 +286,21 @@ def update(cfg, getter, use_cache=True):
     CACHE.mkdir(parents=True, exist_ok=True)
     warnings = []
     groups, upcoming, fresh = collect(cfg, getter, use_cache=use_cache, warnings=warnings)
+    views, season_info, default_season = build(cfg, groups)
     data = {"team": cfg["team"]["name"], "title": cfg["site"]["title"],
             "updated": now_local().strftime("%d.%m.%Y %H:%M"),
             "weights": cfg["weights"], "gk_factor": cfg["goalkeeper"]["factor"],
-            "groups": build(cfg, groups), "warnings": warnings}
+            "seasons": season_info, "default_season": default_season,
+            "views": views, "warnings": warnings}
     docs = ROOT / "docs"
     docs.mkdir(exist_ok=True)
     (docs / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     (docs / "index.html").write_text(render(data), encoding="utf-8")
     for w in warnings:
         print("ВНИМАНИЕ:", w)
-    print(f"Рейтинг: матчей {len(data['groups']['all']['matches'])}, "
-          f"игроков {len(data['groups']['all']['players'])}, новых протоколов {len(fresh)}")
+    total = views["all"]["all"]
+    print(f"Рейтинг: матчей {len(total['matches'])}, игроков {len(total['players'])}, "
+          f"новых протоколов {len(fresh)}, сезонов {len(season_info)}")
     all_matches = [m for g in groups.values() for m in g["matches"]]
     return {"data": data, "matches": all_matches, "upcoming": upcoming, "fresh": fresh}
 
