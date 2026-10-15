@@ -49,6 +49,11 @@ body{margin:0;background:var(--wall);color:var(--ink);font:16px/1.5 var(--text);
 .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
 .seg button:focus-visible,.sort:focus-visible{outline:3px solid var(--line);outline-offset:2px}
 .sortbox{font-size:15px;color:var(--muted)}
+.period{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 16px;font-size:15px;color:var(--muted)}
+.period select,.period input{font:500 15px var(--text);color:var(--ink);background:var(--paper);
+  border:1px solid var(--rule);border-radius:8px;padding:7px 10px}
+.period select:focus-visible,.period input:focus-visible{outline:3px solid var(--line);outline-offset:2px}
+.period .note{font-size:14px}
 .seg button .n{font-size:12px;opacity:.7;margin-left:4px}
 .sort{font:500 15px var(--text);background:none;border:0;border-bottom:2px solid transparent;
   color:var(--muted);padding:4px 2px;margin-left:10px;cursor:pointer}
@@ -171,6 +176,7 @@ h2{font:500 22px/1.2 var(--display);margin:48px 0 14px}
       <button class="sort" data-sort="per_match" aria-pressed="false">по баллам за матч</button>
     </div>
   </div>
+  <div class="period" id="periodrow"></div>
   <div class="board" id="board"></div>
   <h2>Матчи</h2>
   <ul class="matches" id="matches"></ul>
@@ -183,7 +189,60 @@ const D = JSON.parse(document.getElementById('data').textContent);
 const order = ['championship','cup','all'];
 let season = D.default_season || 'all';
 try { const s = localStorage.getItem('aist4-season'); if (s && (s === 'all' || (D.seasons||[]).some(x => x.key === s))) season = s; } catch(e) {}
-const view = () => D.views[season] || D.views.all;
+const baseView = () => D.views[season] || D.views.all;
+let period = {mode: 'all', month: '', from: '', to: ''};   // фильтр по периоду внутри выбранного сезона
+const pcache = {};
+const MONN = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const pday = m => (m.played || '').slice(0, 10);
+function inPeriod(m){
+  if (period.mode === 'all') return true;
+  const d = pday(m); if (!d) return false;
+  if (period.mode === 'month') return d.slice(0, 7) === period.month;
+  return (!period.from || d >= period.from) && (!period.to || d <= period.to);
+}
+const PINFO = (() => { const o = {}; for (const p of D.views.all.all.players) o[p.player_id] = p; return o; })();
+function aggregate(ms){
+  const w = D.weights, rows = {};
+  for (const m of ms) for (const e of m.lineup) {
+    const base = PINFO[e.id] || {name: String(e.id), position: ''};
+    const r = rows[e.id] = rows[e.id] || {player_id: e.id, name: base.name, position: base.position, games: 0, goals: 0,
+      assists: 0, mvp: 0, yellow: 0, red: 0, gk_games: 0, gk_bonus: 0, total: 0, per_match: 0};
+    r.games++; r.goals += e.g; r.assists += e.a; r.mvp += e.mvp; r.yellow += e.y; r.red += e.r;
+    if (e.gk) { r.gk_games++; r.gk_bonus += Math.max(0, (m.expected - m.conceded) * D.gk_factor); }
+  }
+  for (const r of Object.values(rows)) {
+    r.total = Math.round((w.game*r.games + w.goal*r.goals + w.assist*r.assists + w.mvp*r.mvp + w.yellow*r.yellow + w.red*r.red + r.gk_bonus) * 100) / 100;
+    r.gk_bonus = Math.round(r.gk_bonus * 100) / 100;
+    r.per_match = r.games ? Math.round(Math.max(0, r.total / r.games) * 100) / 100 : 0;
+  }
+  return Object.values(rows).sort((a, b) => b.total - a.total || b.per_match - a.per_match || a.name.localeCompare(b.name, 'ru'));
+}
+function view(){
+  const b = baseView();
+  if (period.mode === 'all') return b;
+  const key = season + '|' + period.mode + '|' + period.month + '|' + period.from + '|' + period.to;
+  if (pcache[key]) return pcache[key];
+  const out = {};
+  for (const k of Object.keys(b).filter(k => k !== 'all')) {
+    const ms = b[k].matches.filter(inPeriod);
+    out[k] = {title: b[k].title, matches: ms, players: aggregate(ms)};
+  }
+  const all = b.all.matches.filter(inPeriod);
+  out.all = {title: b.all.title, matches: all, players: aggregate(all)};
+  return pcache[key] = out;
+}
+function periodTitle(){
+  if (period.mode === 'month' && period.month) { const [y, mo] = period.month.split('-'); return MONN[+mo - 1] + ' ' + y; }
+  if (period.mode === 'range') {
+    const f = x => x ? x.split('-').reverse().join('.') : '';
+    return (period.from || period.to) ? `${f(period.from) || 'начала'} - ${f(period.to) || 'конца'}` : 'свой период';
+  }
+  return 'весь сезон';
+}
+function monthsOf(){
+  const set = new Set(baseView().all.matches.map(pday).filter(Boolean).map(d => d.slice(0, 7)));
+  return [...set].sort().reverse();
+}
 const seasonTitle = () => season === 'all' ? 'все сезоны' : ((D.seasons||[]).find(x => x.key === season) || {title: season}).title;
 let group = order.find(k => view()[k] && view()[k].matches.length) || 'all';
 let sortKey = 'total';
@@ -199,10 +258,43 @@ function renderSeasons(){
   box.querySelectorAll('button').forEach(b => b.onclick = () => {
     season = b.dataset.s;
     try { localStorage.setItem('aist4-season', season); } catch(e) {}
+    if (period.mode === 'month' && !monthsOf().includes(period.month)) period.month = monthsOf()[0] || '';
     if (!view()[group] || !view()[group].matches.length) group = 'all';
     draw();
   });
 }
+function renderPeriod(){
+  const box = document.getElementById('periodrow');
+  const modes = [['all', 'Весь сезон'], ['month', 'Месяц'], ['range', 'Свой период']];
+  const months = monthsOf();
+  if (period.mode === 'month' && !months.includes(period.month)) period.month = months[0] || '';
+  const days = baseView().all.matches.map(pday).filter(Boolean).sort();
+  const lo = days[0] || '', hi = days[days.length - 1] || '';
+  let extra = '';
+  if (period.mode === 'month') {
+    extra = months.length ? `<label>Месяц <select id="pmonth">` + months.map(k => {
+      const [y, mo] = k.split('-'); return `<option value="${k}"${k === period.month ? ' selected' : ''}>${MONN[+mo-1]} ${y}</option>`;
+    }).join('') + `</select></label>` : '<span class="note">В выбранном сезоне нет матчей с известной датой.</span>';
+  } else if (period.mode === 'range') {
+    extra = `<label>С <input type="date" id="pfrom" value="${period.from}" min="${lo}" max="${hi}"></label>
+      <label>по <input type="date" id="pto" value="${period.to}" min="${lo}" max="${hi}"></label>`;
+  }
+  box.innerHTML = `<span>Период:</span><div class="seg" role="group" aria-label="Период">` +
+    modes.map(([k, t]) => `<button data-p="${k}" aria-pressed="${k === period.mode}">${t}</button>`).join('') + `</div>` + extra;
+  box.querySelectorAll('[data-p]').forEach(b => b.onclick = () => {
+    period.mode = b.dataset.p;
+    if (period.mode === 'month' && !period.month) period.month = months[0] || '';
+    if (!view()[group] || !view()[group].matches.length) group = 'all';
+    draw();
+  });
+  const sel = document.getElementById('pmonth');
+  if (sel) sel.onchange = () => { period.month = sel.value; redraw(); };
+  for (const [id, key] of [['pfrom', 'from'], ['pto', 'to']]) {
+    const el = document.getElementById(id);
+    if (el) el.onchange = () => { period[key] = el.value; redraw(); };
+  }
+}
+function redraw(){ renderGroups(); renderBoard(); renderMatches(); }
 function renderGroups(){
   const box = document.getElementById('groups');
   box.innerHTML = order.filter(k => view()[k]).map(k =>
@@ -213,7 +305,7 @@ function renderBoard(){
   const g = view()[group];
   const rows = [...g.players].sort((a,b) => b[sortKey]-a[sortKey] || b.total-a.total);
   const el = document.getElementById('board');
-  if (!rows.length){ el.innerHTML = '<div class="empty">В выбранном сезоне и турнире пока нет сыгранных матчей. Рейтинг появится после первого протокола на сайте лиги.</div>'; return; }
+  if (!rows.length){ el.innerHTML = '<div class="empty">За выбранные сезон, период и турнир сыгранных матчей нет. Рейтинг появится после первого протокола на сайте лиги.</div>'; return; }
   el.innerHTML = `<table><thead><tr>
     <th>Место</th><th class="l">Игрок</th><th>Балл</th><th>За матч</th><th title="Игры">И</th><th title="Голы">Г</th>
     <th title="Голевые передачи">П</th><th title="Лучший игрок матча">ЛИ</th>
@@ -248,11 +340,11 @@ function renderHow(){
   document.getElementById('how').innerHTML = `<h2>Как считаются баллы</h2>
   <p>Игра ${fmt(w.game)}, гол ${fmt(w.goal)}, голевая передача ${fmt(w.assist)}, лучший игрок матча ${fmt(w.mvp)}, желтая карточка ${fmt(w.yellow)}, красная ${fmt(w.red)}.</p>
   <p>Вратарь дополнительно получает (ожидаемые голы соперника минус пропущенные) × ${fmt(D.gk_factor)}, но не меньше нуля. Ожидаемые голы равны средней результативности соперника в том же сезоне; если соперник сыграл меньше трех матчей, берется среднее по лиге этого сезона, а в начале сезона, пока данных мало, среднее по всем сезонам.</p>
-  <p>Сезоны считаются по дате матча. Режим «Все сезоны» суммирует матчи всех сезонов; баллы вратаря за каждый матч определяются по его сезону.</p>
+  <p>Сезоны считаются по дате матча. Фильтр «Период» ограничивает выбранный сезон одним месяцем или произвольными датами, баллы при этом пересчитываются по матчам периода. Режим «Все сезоны» суммирует матчи всех сезонов; баллы вратаря за каждый матч определяются по его сезону.</p>
   <p>Баллы за матч равны общему баллу, деленному на число игр, и не опускаются ниже нуля.</p>
   <p>Нажмите на фамилию игрока в таблице, чтобы открыть его подробную статистику.</p>`;
 }
-function draw(){ renderSeasons(); renderGroups(); renderBoard(); renderMatches(); }
+function draw(){ renderSeasons(); renderPeriod(); renderGroups(); renderBoard(); renderMatches(); }
 document.querySelectorAll('.sort').forEach(b => b.onclick = () => {
   sortKey = b.dataset.sort;
   document.querySelectorAll('.sort').forEach(x => x.setAttribute('aria-pressed', x===b));
@@ -401,11 +493,11 @@ function openCard(id){
   const p = findPlayer(id); if(!p) return;
   const {g, ms, apps} = collect(id, group);
   const panel = document.getElementById('panel');
-  const posLine = [p.position, `турнир: ${g.title}`, `период: ${seasonTitle()}`].filter(Boolean).join(' · ');
+  const posLine = [p.position, `турнир: ${g.title}`, `период: ${seasonTitle()}, ${periodTitle()}`].filter(Boolean).join(' · ');
   let html = `<div class="ph"><button class="x" id="xclose" aria-label="Закрыть">×</button>
     <h3 id="pname">${esc(p.name)}</h3><div class="sub">${esc(posLine)} · <a href="https://rfll.ru/player/${id}" target="_blank" rel="noopener">профиль на сайте лиги</a></div></div><div class="pb">`;
   if(!apps.length){
-    html += `<p class="note">В выбранном турнире и периоде (${esc(seasonTitle())}) этот игрок пока не играл.</p>
+    html += `<p class="note">Этот игрок не играл в выбранном турнире и периоде (${esc(seasonTitle())}, ${esc(periodTitle())}).</p>
       <button class="linkbtn" id="toall">Показать все турниры</button></div>`;
     panel.innerHTML = html; bindCard(id); return;
   }
