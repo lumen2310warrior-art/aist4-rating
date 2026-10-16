@@ -1,0 +1,292 @@
+{
+ "match_id": 40613,
+ "home": "Аист-4",
+ "away": "Щит",
+ "home_goals": 3,
+ "away_goals": 16,
+ "date": "16.10 22:10",
+ "home_id": 827,
+ "away_id": 945,
+ "events": [
+  {
+   "name": "Хаванов Александр",
+   "second": 191
+  },
+  {
+   "name": "Зайцев Глеб",
+   "second": 433
+  },
+  {
+   "name": "Нинабанда Луис",
+   "second": 897
+  },
+  {
+   "name": "Брякоткин Андрей",
+   "second": 1555
+  },
+  {
+   "name": "Брякоткин Андрей",
+   "second": 2184
+  },
+  {
+   "name": "Брякоткин Андрей",
+   "second": 2261
+  },
+  {
+   "name": "Нинабанда Луис",
+   "second": 2272
+  },
+  {
+   "name": "Газизулин Ильнур",
+   "second": 2410
+  },
+  {
+   "name": "Калинин Роман",
+   "second": 2548
+  },
+  {
+   "name": "Лимонов Дмитрий",
+   "second": 2563
+  },
+  {
+   "name": "Брякоткин Андрей",
+   "second": 2832
+  },
+  {
+   "name": "Кривошеев Кирилл",
+   "second": 2961
+  },
+  {
+   "name": "Нинабанда Луис",
+   "second": 3051
+  },
+  {
+   "name": "Демидов Данила",
+   "second": 3173
+  },
+  {
+   "name": "Кулагин Антон",
+   "second": 3371
+  },
+  {
+   "name": "Кулагин Антон",
+   "second": 3473
+  },
+  {
+   "name": "Газизулин Ильнур",
+   "second": 3495
+  },
+  {
+   "name": "Брякоткин Андрей",
+   "second": 3546
+  },
+  {
+   "name": "Нинабанда Луис",
+   "second": 3590
+  },
+  {
+   "name": "Нинабанда Луис",
+   "second": 3699
+  },
+  {
+   "name": "Зайцев Глеб",
+   "second": 3801
+  }
+ ],
+ "lineups": {
+  "home": [
+   {
+    "player_id": 12696,
+    "name": "Воинцев Алексей",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 9863,
+    "name": "Корнилов Сергей",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 5157,
+    "name": "Прохоров Дмитрий",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8756,
+    "name": "Азаров Виталий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 3562,
+    "name": "Лимонов Дмитрий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 12697,
+    "name": "Овсянников Роман",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17754,
+    "name": "Матякин Антон",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16980,
+    "name": "Демидов Данила",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17333,
+    "name": "Сапегин Родион",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17332,
+    "name": "Зайцев Глеб",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 17689,
+    "name": "Гулов Рустам",
+    "position": "",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 1889,
+    "name": "Скрипицин Сергей",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8577,
+    "name": "Хаванов Александр",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 4378,
+    "name": "Брякоткин Андрей",
+    "position": "Нападающий",
+    "goals": 5,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 9836,
+    "name": "Калинин Роман",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 1807,
+    "name": "Кривошеев Кирилл",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 9752,
+    "name": "Нинабанда Луис",
+    "position": "Нападающий",
+    "goals": 5,
+    "assists": 4,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 1810,
+    "name": "Кулагин Антон",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 9048,
+    "name": "Газизулин Ильнур",
+    "position": "Вратарь",
+    "goals": 2,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}
