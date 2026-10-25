@@ -1,0 +1,278 @@
+{
+ "match_id": 40619,
+ "home": "Ropeways Russia",
+ "away": "Аист-4",
+ "home_goals": 16,
+ "away_goals": 4,
+ "date": "25.10 19:40",
+ "home_id": 959,
+ "away_id": 827,
+ "events": [
+  {
+   "name": "Мочалов Дмитрий",
+   "second": 385
+  },
+  {
+   "name": "Храмов Владислав",
+   "second": 483
+  },
+  {
+   "name": "Цикин Клим",
+   "second": 1258
+  },
+  {
+   "name": "Храмов Владислав",
+   "second": 1379
+  },
+  {
+   "name": "Учеватов Станислав",
+   "second": 1632
+  },
+  {
+   "name": "Азаров Виталий",
+   "second": 1685
+  },
+  {
+   "name": "Ведерников Сергей",
+   "second": 1945
+  },
+  {
+   "name": "Храмов Владислав",
+   "second": 1994
+  },
+  {
+   "name": "Шакиров Эльдар",
+   "second": 2354
+  },
+  {
+   "name": "Селезнев Егор",
+   "second": 2431
+  },
+  {
+   "name": "Цикин Клим",
+   "second": 2482
+  },
+  {
+   "name": "Цикин Клим",
+   "second": 2557
+  },
+  {
+   "name": "Учеватов Станислав",
+   "second": 2756
+  },
+  {
+   "name": "Селезнев Егор",
+   "second": 2783
+  },
+  {
+   "name": "Мочалов Дмитрий",
+   "second": 2926
+  },
+  {
+   "name": "Шакиров Эльдар",
+   "second": 3041
+  },
+  {
+   "name": "Цикин Клим",
+   "second": 3303
+  },
+  {
+   "name": "Макаров Владислав",
+   "second": 3401
+  },
+  {
+   "name": "Васильев Вадим",
+   "second": 3457
+  },
+  {
+   "name": "Цикин Клим",
+   "second": 3544
+  }
+ ],
+ "lineups": {
+  "home": [
+   {
+    "player_id": 5826,
+    "name": "Одинцов Александр",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 5697,
+    "name": "Мочалов Дмитрий",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12282,
+    "name": "Шакиров Эльдар",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 13368,
+    "name": "Ведерников Сергей",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 4963,
+    "name": "Учеватов Станислав",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6707,
+    "name": "Храмов Владислав",
+    "position": "Нападающий",
+    "goals": 3,
+    "assists": 4,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16387,
+    "name": "Цикин Клим",
+    "position": "Нападающий",
+    "goals": 5,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 5820,
+    "name": "Зубков Игорь",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6316,
+    "name": "Васильев Вадим",
+    "position": "Вратарь",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 17332,
+    "name": "Зайцев Глеб",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16864,
+    "name": "Селезнев Егор",
+    "position": "Нападающий",
+    "goals": 2,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17756,
+    "name": "Синицын Данила",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17998,
+    "name": "Шуреев Касым",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 2123,
+    "name": "Макаров Владислав",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8756,
+    "name": "Азаров Виталий",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6515,
+    "name": "Кауров Иван",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 3562,
+    "name": "Лимонов Дмитрий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12697,
+    "name": "Овсянников Роман",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}
