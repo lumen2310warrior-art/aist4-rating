@@ -1,0 +1,250 @@
+{
+ "match_id": 40626,
+ "home": "Аист-4",
+ "away": "СЭЩ",
+ "home_goals": 0,
+ "away_goals": 12,
+ "date": "30.10 22:10",
+ "home_id": 827,
+ "away_id": 823,
+ "events": [
+  {
+   "name": "Сапожников Данила",
+   "second": 332
+  },
+  {
+   "name": "Сапожников Данила",
+   "second": 638
+  },
+  {
+   "name": "Тыганов Дмитрий",
+   "second": 692
+  },
+  {
+   "name": "Строкин Семен",
+   "second": 1622
+  },
+  {
+   "name": "Сквозников Евгений",
+   "second": 2209
+  },
+  {
+   "name": "Звонарев Александр",
+   "second": 2399
+  },
+  {
+   "name": "Сапожников Данила",
+   "second": 2761
+  },
+  {
+   "name": "Строкин Семен",
+   "second": 2859
+  },
+  {
+   "name": "Кручинин Александр",
+   "second": 2923
+  },
+  {
+   "name": "Строкин Семен",
+   "second": 3038
+  },
+  {
+   "name": "Черных Никита",
+   "second": 3140
+  },
+  {
+   "name": "Тыганов Дмитрий",
+   "second": 3174
+  },
+  {
+   "name": "Черных Никита",
+   "second": 3267
+  }
+ ],
+ "lineups": {
+  "home": [
+   {
+    "player_id": 17756,
+    "name": "Синицын Данила",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 5157,
+    "name": "Прохоров Дмитрий",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16864,
+    "name": "Селезнев Егор",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8756,
+    "name": "Азаров Виталий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12697,
+    "name": "Овсянников Роман",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17333,
+    "name": "Сапегин Родион",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17332,
+    "name": "Зайцев Глеб",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 12604,
+    "name": "Акимов Антон",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12564,
+    "name": "Сапожников Данила",
+    "position": "Нападающий",
+    "goals": 3,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 10860,
+    "name": "Вишневский Юрий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12600,
+    "name": "Кручинин Александр",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 2,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 10534,
+    "name": "Тыганов Дмитрий",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 14965,
+    "name": "Черных Никита",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 2,
+    "op": 0,
+    "yellow": 1,
+    "red": 0
+   },
+   {
+    "player_id": 12935,
+    "name": "Строкин Семен",
+    "position": "Защитник",
+    "goals": 3,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12605,
+    "name": "Сквозников Евгений",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 2853,
+    "name": "Комлев Аркадий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 7158,
+    "name": "Звонарев Александр",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 768,
+    "name": "Рыжов Денис",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}
