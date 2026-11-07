@@ -1,7 +1,7 @@
 {
  "team": "Аист-4",
  "title": "Рейтинг игроков Аист-4",
- "updated": "07.11.2026 20:21",
+ "updated": "08.11.2026 00:50",
  "weights": {
   "game": 1.0,
   "goal": 1.2,
@@ -22,7 +22,7 @@
   {
    "key": "2026-2027",
    "title": "Сезон 2026-2027",
-   "matches": 3,
+   "matches": 4,
    "start": "2026-10-16",
    "end": "2027-03-31"
   }
@@ -37,8 +37,8 @@
       "player_id": 16864,
       "name": "Селезнев Егор",
       "position": "Нападающий",
-      "games": 20,
-      "goals": 34,
+      "games": 21,
+      "goals": 35,
       "assists": 16,
       "mvp": 5,
       "yellow": 0,
@@ -46,14 +46,14 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 84.3,
-      "per_match": 4.21
+      "total": 86.5,
+      "per_match": 4.12
      },
      {
       "player_id": 16980,
       "name": "Демидов Данила",
       "position": "Нападающий",
-      "games": 15,
+      "games": 16,
       "goals": 24,
       "assists": 16,
       "mvp": 5,
@@ -62,14 +62,14 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 64.3,
-      "per_match": 4.29
+      "total": 65.3,
+      "per_match": 4.08
      },
      {
       "player_id": 8756,
       "name": "Азаров Виталий",
       "position": "Защитник",
-      "games": 20,
+      "games": 21,
       "goals": 7,
       "assists": 1,
       "mvp": 1,
@@ -78,8 +78,8 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 30.9,
-      "per_match": 1.54
+      "total": 31.9,
+      "per_match": 1.52
      },
      {
       "player_id": 12697,
@@ -98,6 +98,22 @@
       "per_match": 1.64
      },
      {
+      "player_id": 12696,
+      "name": "Воинцев Алексей",
+      "position": "Вратарь",
+      "games": 14,
+      "goals": 0,
+      "assists": 6,
+      "mvp": 4,
+      "yellow": 1,
+      "red": 0,
+      "op": 0,
+      "gk_games": 14,
+      "gk_bonus": 2.38,
+      "total": 27.88,
+      "per_match": 1.99
+     },
+     {
       "player_id": 5157,
       "name": "Прохоров Дмитрий",
       "position": "Нападающий",
@@ -114,26 +130,10 @@
       "per_match": 3.93
      },
      {
-      "player_id": 12696,
-      "name": "Воинцев Алексей",
-      "position": "Вратарь",
-      "games": 13,
-      "goals": 0,
-      "assists": 5,
-      "mvp": 4,
-      "yellow": 1,
-      "red": 0,
-      "op": 0,
-      "gk_games": 13,
-      "gk_bonus": 2.31,
-      "total": 25.81,
-      "per_match": 1.99
-     },
-     {
       "player_id": 17332,
       "name": "Зайцев Глеб",
       "position": "Нападающий",
-      "games": 8,
+      "games": 9,
       "goals": 10,
       "assists": 2,
       "mvp": 0,
@@ -142,8 +142,24 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 22.0,
-      "per_match": 2.75
+      "total": 23.0,
+      "per_match": 2.56
+     },
+     {
+      "player_id": 6515,
+      "name": "Кауров Иван",
+      "position": "Защитник",
+      "games": 14,
+      "goals": 3,
+      "assists": 3,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 20.6,
+      "per_match": 1.47
      },
      {
       "player_id": 16489,
@@ -160,22 +176,6 @@
       "gk_bonus": 0.0,
       "total": 19.6,
       "per_match": 1.96
-     },
-     {
-      "player_id": 6515,
-      "name": "Кауров Иван",
-      "position": "Защитник",
-      "games": 13,
-      "goals": 3,
-      "assists": 3,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 19.6,
-      "per_match": 1.51
      },
      {
       "player_id": 16435,
@@ -197,7 +197,7 @@
       "player_id": 17333,
       "name": "Сапегин Родион",
       "position": "Защитник",
-      "games": 8,
+      "games": 9,
       "goals": 3,
       "assists": 3,
       "mvp": 0,
@@ -206,8 +206,24 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 14.6,
-      "per_match": 1.82
+      "total": 15.6,
+      "per_match": 1.73
+     },
+     {
+      "player_id": 2123,
+      "name": "Макаров Владислав",
+      "position": "Нападающий",
+      "games": 7,
+      "goals": 2,
+      "assists": 1,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 10.4,
+      "per_match": 1.49
      },
      {
       "player_id": 16426,
@@ -224,22 +240,6 @@
       "gk_bonus": 0.0,
       "total": 9.6,
       "per_match": 2.4
-     },
-     {
-      "player_id": 2123,
-      "name": "Макаров Владислав",
-      "position": "Нападающий",
-      "games": 6,
-      "goals": 2,
-      "assists": 1,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 9.4,
-      "per_match": 1.57
      },
      {
       "player_id": 16415,
@@ -386,6 +386,22 @@
       "per_match": 1.0
      },
      {
+      "player_id": 17998,
+      "name": "Шуреев Касым",
+      "position": "Защитник",
+      "games": 2,
+      "goals": 0,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 2.0,
+      "per_match": 1.0
+     },
+     {
       "player_id": 3562,
       "name": "Лимонов Дмитрий",
       "position": "Защитник",
@@ -405,22 +421,6 @@
       "player_id": 17754,
       "name": "Матякин Антон",
       "position": "Нападающий",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
-     },
-     {
-      "player_id": 17998,
-      "name": "Шуреев Касым",
-      "position": "Защитник",
       "games": 1,
       "goals": 0,
       "assists": 0,
@@ -2353,7 +2353,7 @@
       "home": false,
       "scored": 4,
       "conceded": 16,
-      "expected": 11.0,
+      "expected": 9.5,
       "expected_basis": "соперник",
       "mvp_names": [],
       "group": "championship",
@@ -2511,6 +2511,103 @@
        },
        {
         "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       }
+      ]
+     },
+     {
+      "match_id": 40634,
+      "date": "07 ноября 19:20",
+      "played": "2026-11-07T19:20:00+04:00",
+      "season": "2026-2027",
+      "opponent": "АрмаГрупп",
+      "home": true,
+      "scored": 1,
+      "conceded": 10,
+      "expected": 10.25,
+      "expected_basis": "соперник",
+      "mvp_names": [],
+      "group": "championship",
+      "lineup": [
+       {
+        "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17998,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 12696,
+        "g": 0,
+        "a": 1,
+        "y": 0,
+        "r": 0,
+        "gk": 1,
+        "mvp": 0
+       },
+       {
+        "id": 16864,
+        "g": 1,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 2123,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 8756,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 6515,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 16980,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17333,
         "g": 0,
         "a": 0,
         "y": 0,
@@ -3030,8 +3127,8 @@
       "player_id": 16864,
       "name": "Селезнев Егор",
       "position": "Нападающий",
-      "games": 21,
-      "goals": 36,
+      "games": 22,
+      "goals": 37,
       "assists": 16,
       "mvp": 5,
       "yellow": 1,
@@ -3039,14 +3136,14 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 87.2,
-      "per_match": 4.15
+      "total": 89.4,
+      "per_match": 4.06
      },
      {
       "player_id": 16980,
       "name": "Демидов Данила",
       "position": "Нападающий",
-      "games": 18,
+      "games": 19,
       "goals": 31,
       "assists": 18,
       "mvp": 6,
@@ -3055,8 +3152,8 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 79.2,
-      "per_match": 4.4
+      "total": 80.2,
+      "per_match": 4.22
      },
      {
       "player_id": 12697,
@@ -3078,7 +3175,7 @@
       "player_id": 8756,
       "name": "Азаров Виталий",
       "position": "Защитник",
-      "games": 22,
+      "games": 23,
       "goals": 9,
       "assists": 2,
       "mvp": 1,
@@ -3087,24 +3184,40 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 36.3,
-      "per_match": 1.65
+      "total": 37.3,
+      "per_match": 1.62
      },
      {
       "player_id": 12696,
       "name": "Воинцев Алексей",
       "position": "Вратарь",
-      "games": 15,
+      "games": 16,
       "goals": 0,
-      "assists": 5,
+      "assists": 6,
       "mvp": 5,
       "yellow": 1,
       "red": 0,
       "op": 0,
-      "gk_games": 15,
-      "gk_bonus": 3.33,
-      "total": 30.33,
+      "gk_games": 16,
+      "gk_bonus": 3.4,
+      "total": 32.4,
       "per_match": 2.02
+     },
+     {
+      "player_id": 6515,
+      "name": "Кауров Иван",
+      "position": "Защитник",
+      "games": 17,
+      "goals": 6,
+      "assists": 4,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 28.2,
+      "per_match": 1.66
      },
      {
       "player_id": 5157,
@@ -3123,26 +3236,10 @@
       "per_match": 3.93
      },
      {
-      "player_id": 6515,
-      "name": "Кауров Иван",
-      "position": "Защитник",
-      "games": 16,
-      "goals": 6,
-      "assists": 4,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 27.2,
-      "per_match": 1.7
-     },
-     {
       "player_id": 17332,
       "name": "Зайцев Глеб",
       "position": "Нападающий",
-      "games": 8,
+      "games": 9,
       "goals": 10,
       "assists": 2,
       "mvp": 0,
@@ -3151,8 +3248,8 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 22.0,
-      "per_match": 2.75
+      "total": 23.0,
+      "per_match": 2.56
      },
      {
       "player_id": 16489,
@@ -3190,7 +3287,7 @@
       "player_id": 17333,
       "name": "Сапегин Родион",
       "position": "Защитник",
-      "games": 8,
+      "games": 9,
       "goals": 3,
       "assists": 3,
       "mvp": 0,
@@ -3199,8 +3296,8 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 14.6,
-      "per_match": 1.82
+      "total": 15.6,
+      "per_match": 1.73
      },
      {
       "player_id": 16415,
@@ -3235,6 +3332,22 @@
       "per_match": 2.08
      },
      {
+      "player_id": 2123,
+      "name": "Макаров Владислав",
+      "position": "Нападающий",
+      "games": 7,
+      "goals": 2,
+      "assists": 1,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 10.4,
+      "per_match": 1.49
+     },
+     {
       "player_id": 16426,
       "name": "Акимов Артем",
       "position": "",
@@ -3249,22 +3362,6 @@
       "gk_bonus": 0.0,
       "total": 9.6,
       "per_match": 2.4
-     },
-     {
-      "player_id": 2123,
-      "name": "Макаров Владислав",
-      "position": "Нападающий",
-      "games": 6,
-      "goals": 2,
-      "assists": 1,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 9.4,
-      "per_match": 1.57
      },
      {
       "player_id": 15014,
@@ -3395,6 +3492,22 @@
       "per_match": 1.0
      },
      {
+      "player_id": 17998,
+      "name": "Шуреев Касым",
+      "position": "Защитник",
+      "games": 2,
+      "goals": 0,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 2.0,
+      "per_match": 1.0
+     },
+     {
       "player_id": 3562,
       "name": "Лимонов Дмитрий",
       "position": "Защитник",
@@ -3430,22 +3543,6 @@
       "player_id": 17754,
       "name": "Матякин Антон",
       "position": "Нападающий",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
-     },
-     {
-      "player_id": 17998,
-      "name": "Шуреев Касым",
-      "position": "Защитник",
       "games": 1,
       "goals": 0,
       "assists": 0,
@@ -5378,7 +5475,7 @@
       "home": false,
       "scored": 4,
       "conceded": 16,
-      "expected": 11.0,
+      "expected": 9.5,
       "expected_basis": "соперник",
       "mvp_names": [],
       "group": "championship",
@@ -5536,6 +5633,103 @@
        },
        {
         "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       }
+      ]
+     },
+     {
+      "match_id": 40634,
+      "date": "07 ноября 19:20",
+      "played": "2026-11-07T19:20:00+04:00",
+      "season": "2026-2027",
+      "opponent": "АрмаГрупп",
+      "home": true,
+      "scored": 1,
+      "conceded": 10,
+      "expected": 10.25,
+      "expected_basis": "соперник",
+      "mvp_names": [],
+      "group": "championship",
+      "lineup": [
+       {
+        "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17998,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 12696,
+        "g": 0,
+        "a": 1,
+        "y": 0,
+        "r": 0,
+        "gk": 1,
+        "mvp": 0
+       },
+       {
+        "id": 16864,
+        "g": 1,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 2123,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 8756,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 6515,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 16980,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17333,
         "g": 0,
         "a": 0,
         "y": 0,
@@ -10923,8 +11117,8 @@
       "player_id": 16864,
       "name": "Селезнев Егор",
       "position": "Нападающий",
-      "games": 2,
-      "goals": 2,
+      "games": 3,
+      "goals": 3,
       "assists": 2,
       "mvp": 0,
       "yellow": 0,
@@ -10932,14 +11126,14 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 6.4,
-      "per_match": 3.2
+      "total": 8.6,
+      "per_match": 2.87
      },
      {
       "player_id": 17332,
       "name": "Зайцев Глеб",
       "position": "Нападающий",
-      "games": 3,
+      "games": 4,
       "goals": 2,
       "assists": 0,
       "mvp": 0,
@@ -10948,8 +11142,24 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 5.4,
-      "per_match": 1.8
+      "total": 6.4,
+      "per_match": 1.6
+     },
+     {
+      "player_id": 8756,
+      "name": "Азаров Виталий",
+      "position": "Защитник",
+      "games": 4,
+      "goals": 1,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 5.2,
+      "per_match": 1.3
      },
      {
       "player_id": 12697,
@@ -10968,26 +11178,10 @@
       "per_match": 1.67
      },
      {
-      "player_id": 8756,
-      "name": "Азаров Виталий",
-      "position": "Защитник",
-      "games": 3,
-      "goals": 1,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 4.2,
-      "per_match": 1.4
-     },
-     {
       "player_id": 16980,
       "name": "Демидов Данила",
       "position": "Нападающий",
-      "games": 1,
+      "games": 2,
       "goals": 1,
       "assists": 1,
       "mvp": 0,
@@ -10996,14 +11190,14 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 3.2,
-      "per_match": 3.2
+      "total": 4.2,
+      "per_match": 2.1
      },
      {
       "player_id": 2123,
       "name": "Макаров Владислав",
       "position": "Нападающий",
-      "games": 1,
+      "games": 2,
       "goals": 1,
       "assists": 0,
       "mvp": 0,
@@ -11012,13 +11206,45 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 2.2,
-      "per_match": 2.2
+      "total": 3.2,
+      "per_match": 1.6
      },
      {
-      "player_id": 5157,
-      "name": "Прохоров Дмитрий",
-      "position": "Нападающий",
+      "player_id": 12696,
+      "name": "Воинцев Алексей",
+      "position": "Вратарь",
+      "games": 2,
+      "goals": 0,
+      "assists": 1,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 2,
+      "gk_bonus": 0.07,
+      "total": 3.08,
+      "per_match": 1.54
+     },
+     {
+      "player_id": 17333,
+      "name": "Сапегин Родион",
+      "position": "Защитник",
+      "games": 3,
+      "goals": 0,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 3.0,
+      "per_match": 1.0
+     },
+     {
+      "player_id": 6515,
+      "name": "Кауров Иван",
+      "position": "Защитник",
       "games": 2,
       "goals": 0,
       "assists": 0,
@@ -11032,9 +11258,9 @@
       "per_match": 1.0
      },
      {
-      "player_id": 17333,
-      "name": "Сапегин Родион",
-      "position": "Защитник",
+      "player_id": 5157,
+      "name": "Прохоров Дмитрий",
+      "position": "Нападающий",
       "games": 2,
       "goals": 0,
       "assists": 0,
@@ -11064,6 +11290,22 @@
       "per_match": 1.0
      },
      {
+      "player_id": 17998,
+      "name": "Шуреев Касым",
+      "position": "Защитник",
+      "games": 2,
+      "goals": 0,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 2.0,
+      "per_match": 1.0
+     },
+     {
       "player_id": 3562,
       "name": "Лимонов Дмитрий",
       "position": "Защитник",
@@ -11078,38 +11320,6 @@
       "gk_bonus": 0.0,
       "total": 1.5,
       "per_match": 0.75
-     },
-     {
-      "player_id": 12696,
-      "name": "Воинцев Алексей",
-      "position": "Вратарь",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 1,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
-     },
-     {
-      "player_id": 6515,
-      "name": "Кауров Иван",
-      "position": "Защитник",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
      },
      {
       "player_id": 9863,
@@ -11131,22 +11341,6 @@
       "player_id": 17754,
       "name": "Матякин Антон",
       "position": "Нападающий",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
-     },
-     {
-      "player_id": 17998,
-      "name": "Шуреев Касым",
-      "position": "Защитник",
       "games": 1,
       "goals": 0,
       "assists": 0,
@@ -11276,7 +11470,7 @@
       "home": false,
       "scored": 4,
       "conceded": 16,
-      "expected": 11.0,
+      "expected": 9.5,
       "expected_basis": "соперник",
       "mvp_names": [],
       "group": "championship",
@@ -11434,6 +11628,103 @@
        },
        {
         "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       }
+      ]
+     },
+     {
+      "match_id": 40634,
+      "date": "07 ноября 19:20",
+      "played": "2026-11-07T19:20:00+04:00",
+      "season": "2026-2027",
+      "opponent": "АрмаГрупп",
+      "home": true,
+      "scored": 1,
+      "conceded": 10,
+      "expected": 10.25,
+      "expected_basis": "соперник",
+      "mvp_names": [],
+      "group": "championship",
+      "lineup": [
+       {
+        "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17998,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 12696,
+        "g": 0,
+        "a": 1,
+        "y": 0,
+        "r": 0,
+        "gk": 1,
+        "mvp": 0
+       },
+       {
+        "id": 16864,
+        "g": 1,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 2123,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 8756,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 6515,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 16980,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17333,
         "g": 0,
         "a": 0,
         "y": 0,
@@ -11457,8 +11748,8 @@
       "player_id": 16864,
       "name": "Селезнев Егор",
       "position": "Нападающий",
-      "games": 2,
-      "goals": 2,
+      "games": 3,
+      "goals": 3,
       "assists": 2,
       "mvp": 0,
       "yellow": 0,
@@ -11466,14 +11757,14 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 6.4,
-      "per_match": 3.2
+      "total": 8.6,
+      "per_match": 2.87
      },
      {
       "player_id": 17332,
       "name": "Зайцев Глеб",
       "position": "Нападающий",
-      "games": 3,
+      "games": 4,
       "goals": 2,
       "assists": 0,
       "mvp": 0,
@@ -11482,8 +11773,24 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 5.4,
-      "per_match": 1.8
+      "total": 6.4,
+      "per_match": 1.6
+     },
+     {
+      "player_id": 8756,
+      "name": "Азаров Виталий",
+      "position": "Защитник",
+      "games": 4,
+      "goals": 1,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 5.2,
+      "per_match": 1.3
      },
      {
       "player_id": 12697,
@@ -11502,26 +11809,10 @@
       "per_match": 1.67
      },
      {
-      "player_id": 8756,
-      "name": "Азаров Виталий",
-      "position": "Защитник",
-      "games": 3,
-      "goals": 1,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 4.2,
-      "per_match": 1.4
-     },
-     {
       "player_id": 16980,
       "name": "Демидов Данила",
       "position": "Нападающий",
-      "games": 1,
+      "games": 2,
       "goals": 1,
       "assists": 1,
       "mvp": 0,
@@ -11530,14 +11821,14 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 3.2,
-      "per_match": 3.2
+      "total": 4.2,
+      "per_match": 2.1
      },
      {
       "player_id": 2123,
       "name": "Макаров Владислав",
       "position": "Нападающий",
-      "games": 1,
+      "games": 2,
       "goals": 1,
       "assists": 0,
       "mvp": 0,
@@ -11546,13 +11837,45 @@
       "op": 0,
       "gk_games": 0,
       "gk_bonus": 0.0,
-      "total": 2.2,
-      "per_match": 2.2
+      "total": 3.2,
+      "per_match": 1.6
      },
      {
-      "player_id": 5157,
-      "name": "Прохоров Дмитрий",
-      "position": "Нападающий",
+      "player_id": 12696,
+      "name": "Воинцев Алексей",
+      "position": "Вратарь",
+      "games": 2,
+      "goals": 0,
+      "assists": 1,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 2,
+      "gk_bonus": 0.07,
+      "total": 3.08,
+      "per_match": 1.54
+     },
+     {
+      "player_id": 17333,
+      "name": "Сапегин Родион",
+      "position": "Защитник",
+      "games": 3,
+      "goals": 0,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 3.0,
+      "per_match": 1.0
+     },
+     {
+      "player_id": 6515,
+      "name": "Кауров Иван",
+      "position": "Защитник",
       "games": 2,
       "goals": 0,
       "assists": 0,
@@ -11566,9 +11889,9 @@
       "per_match": 1.0
      },
      {
-      "player_id": 17333,
-      "name": "Сапегин Родион",
-      "position": "Защитник",
+      "player_id": 5157,
+      "name": "Прохоров Дмитрий",
+      "position": "Нападающий",
       "games": 2,
       "goals": 0,
       "assists": 0,
@@ -11598,6 +11921,22 @@
       "per_match": 1.0
      },
      {
+      "player_id": 17998,
+      "name": "Шуреев Касым",
+      "position": "Защитник",
+      "games": 2,
+      "goals": 0,
+      "assists": 0,
+      "mvp": 0,
+      "yellow": 0,
+      "red": 0,
+      "op": 0,
+      "gk_games": 0,
+      "gk_bonus": 0.0,
+      "total": 2.0,
+      "per_match": 1.0
+     },
+     {
       "player_id": 3562,
       "name": "Лимонов Дмитрий",
       "position": "Защитник",
@@ -11612,38 +11951,6 @@
       "gk_bonus": 0.0,
       "total": 1.5,
       "per_match": 0.75
-     },
-     {
-      "player_id": 12696,
-      "name": "Воинцев Алексей",
-      "position": "Вратарь",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 1,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
-     },
-     {
-      "player_id": 6515,
-      "name": "Кауров Иван",
-      "position": "Защитник",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
      },
      {
       "player_id": 9863,
@@ -11665,22 +11972,6 @@
       "player_id": 17754,
       "name": "Матякин Антон",
       "position": "Нападающий",
-      "games": 1,
-      "goals": 0,
-      "assists": 0,
-      "mvp": 0,
-      "yellow": 0,
-      "red": 0,
-      "op": 0,
-      "gk_games": 0,
-      "gk_bonus": 0.0,
-      "total": 1.0,
-      "per_match": 1.0
-     },
-     {
-      "player_id": 17998,
-      "name": "Шуреев Касым",
-      "position": "Защитник",
       "games": 1,
       "goals": 0,
       "assists": 0,
@@ -11810,7 +12101,7 @@
       "home": false,
       "scored": 4,
       "conceded": 16,
-      "expected": 11.0,
+      "expected": 9.5,
       "expected_basis": "соперник",
       "mvp_names": [],
       "group": "championship",
@@ -11968,6 +12259,103 @@
        },
        {
         "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       }
+      ]
+     },
+     {
+      "match_id": 40634,
+      "date": "07 ноября 19:20",
+      "played": "2026-11-07T19:20:00+04:00",
+      "season": "2026-2027",
+      "opponent": "АрмаГрупп",
+      "home": true,
+      "scored": 1,
+      "conceded": 10,
+      "expected": 10.25,
+      "expected_basis": "соперник",
+      "mvp_names": [],
+      "group": "championship",
+      "lineup": [
+       {
+        "id": 17332,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17998,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 12696,
+        "g": 0,
+        "a": 1,
+        "y": 0,
+        "r": 0,
+        "gk": 1,
+        "mvp": 0
+       },
+       {
+        "id": 16864,
+        "g": 1,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 2123,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 8756,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 6515,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 16980,
+        "g": 0,
+        "a": 0,
+        "y": 0,
+        "r": 0,
+        "gk": 0,
+        "mvp": 0
+       },
+       {
+        "id": 17333,
         "g": 0,
         "a": 0,
         "y": 0,
@@ -11998,7 +12386,5 @@
    }
   }
  },
- "warnings": [
-  "Матч 40634: протокол не загружен (Протокол матча 40634 не распознан: заголовок=нет, таблиц составов=2)"
- ]
+ "warnings": []
 }

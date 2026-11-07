@@ -1,0 +1,272 @@
+{
+ "match_id": 40634,
+ "home": "Аист-4",
+ "away": "АрмаГрупп",
+ "home_goals": 1,
+ "away_goals": 10,
+ "date": "07.11 19:20",
+ "home_id": 827,
+ "away_id": 1063,
+ "events": [
+  {
+   "name": "Катков Максим",
+   "second": 503
+  },
+  {
+   "name": "Селезнев Егор",
+   "second": 710
+  },
+  {
+   "name": "Шепелев Егор",
+   "second": 792
+  },
+  {
+   "name": "Пилипушко Дмитрий",
+   "second": 1144
+  },
+  {
+   "name": "Синельников Родион",
+   "second": 1495
+  },
+  {
+   "name": "Синельников Родион",
+   "second": 1923
+  },
+  {
+   "name": "Синельников Родион",
+   "second": 2057
+  },
+  {
+   "name": "Синельников Родион",
+   "second": 2332
+  },
+  {
+   "name": "Евсейчев Данила",
+   "second": 2648
+  },
+  {
+   "name": "Катков Максим",
+   "second": 2749
+  },
+  {
+   "name": "Дудашвили Георгий",
+   "second": 3352
+  }
+ ],
+ "lineups": {
+  "home": [
+   {
+    "player_id": 17332,
+    "name": "Зайцев Глеб",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17998,
+    "name": "Шуреев Касым",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 12696,
+    "name": "Воинцев Алексей",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16864,
+    "name": "Селезнев Егор",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 2123,
+    "name": "Макаров Владислав",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8756,
+    "name": "Азаров Виталий",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 6515,
+    "name": "Кауров Иван",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 16980,
+    "name": "Демидов Данила",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17333,
+    "name": "Сапегин Родион",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ],
+  "away": [
+   {
+    "player_id": 17381,
+    "name": "Клева Мирон",
+    "position": "Вратарь",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17852,
+    "name": "Кудряшов Владислав",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 3,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17848,
+    "name": "Катков Максим",
+    "position": "Защитник",
+    "goals": 2,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 11711,
+    "name": "Синельников Родион",
+    "position": "Нападающий",
+    "goals": 4,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17843,
+    "name": "Ахметзянов Андрей",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17845,
+    "name": "Дудашвили Георгий",
+    "position": "Вратарь",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17850,
+    "name": "Пилипушко Дмитрий",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17846,
+    "name": "Евсейчев Данила",
+    "position": "Защитник",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 18034,
+    "name": "Столяров Тимофей",
+    "position": "Нападающий",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17844,
+    "name": "Денисов Никита",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 17851,
+    "name": "Шепелев Егор",
+    "position": "Нападающий",
+    "goals": 1,
+    "assists": 1,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   },
+   {
+    "player_id": 8479,
+    "name": "Поздняков Алексей",
+    "position": "Защитник",
+    "goals": 0,
+    "assists": 0,
+    "op": 0,
+    "yellow": 0,
+    "red": 0
+   }
+  ]
+ }
+}
