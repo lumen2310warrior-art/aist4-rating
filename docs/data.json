@@ -1,7 +1,7 @@
 {
  "team": "Аист-4",
  "title": "Рейтинг игроков Аист-4",
- "updated": "21.11.2026 00:01",
+ "updated": "21.11.2026 05:26",
  "weights": {
   "game": 1.0,
   "goal": 1.2,
@@ -22,7 +22,7 @@
   {
    "key": "2026-2027",
    "title": "Сезон 2026-2027",
-   "matches": 4,
+   "matches": 5,
    "start": "2026-10-16",
    "end": "2027-03-31"
   }
@@ -3117,6 +3117,21 @@
         "mvp": 1
        }
       ]
+     },
+     {
+      "match_id": 41053,
+      "date": "20 ноября 22:10",
+      "played": "2026-11-20T22:10:00+04:00",
+      "season": "2026-2027",
+      "opponent": "Т Плюс",
+      "home": false,
+      "scored": 0,
+      "conceded": 10,
+      "expected": 6.72,
+      "expected_basis": "лига",
+      "mvp_names": [],
+      "group": "cup",
+      "lineup": []
      }
     ]
    },
@@ -6008,6 +6023,21 @@
         "mvp": 1
        }
       ]
+     },
+     {
+      "match_id": 41053,
+      "date": "20 ноября 22:10",
+      "played": "2026-11-20T22:10:00+04:00",
+      "season": "2026-2027",
+      "opponent": "Т Плюс",
+      "home": false,
+      "scored": 0,
+      "conceded": 10,
+      "expected": 6.72,
+      "expected_basis": "лига",
+      "mvp_names": [],
+      "group": "cup",
+      "lineup": []
      }
     ]
    }
@@ -11739,7 +11769,23 @@
    "cup": {
     "title": "Кубок",
     "players": [],
-    "matches": []
+    "matches": [
+     {
+      "match_id": 41053,
+      "date": "20 ноября 22:10",
+      "played": "2026-11-20T22:10:00+04:00",
+      "season": "2026-2027",
+      "opponent": "Т Плюс",
+      "home": false,
+      "scored": 0,
+      "conceded": 10,
+      "expected": 6.72,
+      "expected_basis": "лига",
+      "mvp_names": [],
+      "group": "cup",
+      "lineup": []
+     }
+    ]
    },
    "all": {
     "title": "Все турниры",
@@ -12364,6 +12410,21 @@
         "mvp": 0
        }
       ]
+     },
+     {
+      "match_id": 41053,
+      "date": "20 ноября 22:10",
+      "played": "2026-11-20T22:10:00+04:00",
+      "season": "2026-2027",
+      "opponent": "Т Плюс",
+      "home": false,
+      "scored": 0,
+      "conceded": 10,
+      "expected": 6.72,
+      "expected_basis": "лига",
+      "mvp_names": [],
+      "group": "cup",
+      "lineup": []
      }
     ]
    }
